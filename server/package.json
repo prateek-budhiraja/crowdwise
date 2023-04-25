@@ -1,0 +1,37 @@
+{
+	"name": "crowdwise",
+	"version": "1.0.0",
+	"description": "Crowd funding application",
+	"main": "server.js",
+	"type": "module",
+	"scripts": {
+		"start": "nodemon server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/prateek-budhiraja/crowdwise.git"
+	},
+	"keywords": [
+		"crowd",
+		"funding",
+		"mern",
+		"react",
+		"express"
+	],
+	"author": "Prateek Budhiraja",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/prateek-budhiraja/crowdwise/issues"
+	},
+	"homepage": "https://github.com/prateek-budhiraja/crowdwise#readme",
+	"dependencies": {
+		"bcrypt": "^5.1.0",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"jsonwebtoken": "^9.0.0",
+		"mongoose": "^7.0.5"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.22"
+	}
+}

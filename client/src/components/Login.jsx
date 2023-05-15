@@ -7,13 +7,13 @@ function Login() {
 				<img
 					src="/assets/logo.png"
 					alt="logo"
-					className="w-[180px] mx-auto mb-8"
+					className="w-[180px] lg:w-[250px] mx-auto mb-8 lg:mb-12"
 				/>
 			</a>
-			<h2 className="text-white font-semibold text-2xl">
+			<h2 className="text-white font-semibold text-2xl lg:text-4xl">
 				Sign In To Your Account
 			</h2>
-			<div className="mt-8 flex flex-col gap-5 items-center">
+			<div className="mt-8 lg:mt-[80px] flex flex-col gap-5 items-center">
 				<div className="mx-auto">
 					<GoogleLogin
 						onSuccess={(credentialResponse) => {

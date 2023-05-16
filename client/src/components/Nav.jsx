@@ -25,11 +25,11 @@ function Nav() {
 				<span className="block w-6 h-0.5 bg-gray-400 rounded"></span>
 				<span className="block w-6 h-0.5 bg-gray-400 rounded"></span>
 			</div>
-			<div className="flex flex-fol gap-10 text-gray-300">
+			<div className="hidden lg:flex flex-fol gap-10 text-gray-300">
 				<span className="hover:text-accentOrange">Start a Campaign</span>
 				<span className="hover:text-accentOrange">Browse</span>
 			</div>
-			<button className="py-1.5 px-5 bg-gray-300 font-medium text-accentOrange rounded-full hover:bg-accentOrange hover:text-gray-300">
+			<button className="hidden lg:inline-block py-1.5 px-5 bg-gray-300 font-medium text-accentOrange rounded-full hover:bg-accentOrange hover:text-gray-300">
 				Login
 			</button>
 			{isNavOpen ? (

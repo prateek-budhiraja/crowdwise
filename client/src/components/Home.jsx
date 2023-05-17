@@ -3,21 +3,64 @@ import CampaignCard from "./CampaignCard";
 import CategoryButton from "./CategoryButton";
 import Nav from "./Nav";
 
-const campaign = {
-	banner:
-		"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
-	name: "Austin’s Life-Saving Heart Transplant Fund",
-	location: "LOS ANGELES, CA",
-	created_by: "Austin",
-	goal: 100000,
-	raised: 80000,
-};
+const campaigns = [
+	{
+		banner:
+			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
+		name: "Austin’s Life-Saving Heart Transplant Fund",
+		location: "LOS ANGELES, CA",
+		created_by: "Austin",
+		goal: 100000,
+		raised: 80000,
+		category: "Medical",
+	},
+	{
+		banner:
+			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
+		name: "Austin’s Life-Saving Heart Transplant Fund",
+		location: "LOS ANGELES, CA",
+		created_by: "Austin",
+		goal: 100000,
+		raised: 80000,
+		category: "Medical",
+	},
+	{
+		banner:
+			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
+		name: "Austin’s Life-Saving Heart Transplant Fund",
+		location: "LOS ANGELES, CA",
+		created_by: "Austin",
+		goal: 100000,
+		raised: 80000,
+		category: "Medical",
+	},
+	{
+		banner:
+			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
+		name: "Austin’s Life-Saving Heart Transplant Fund",
+		location: "LOS ANGELES, CA",
+		created_by: "Austin",
+		goal: 100000,
+		raised: 80000,
+		category: "Medical",
+	},
+	{
+		banner:
+			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
+		name: "Austin’s Life-Saving Heart Transplant Fund",
+		location: "LOS ANGELES, CA",
+		created_by: "Austin",
+		goal: 100000,
+		raised: 80000,
+		category: "Medical",
+	},
+];
 
 function Home() {
 	return (
 		<>
 			<Nav />
-			<div className="py-5 lg:py-10 px-4 bg-[url('/assets/world.svg')] text-center object-contain bg-no-repeat bg-cover bg-center">
+			<div className="py-5 lg:py-10 px-4 bg-[url('/assets/world.svg')] text-center bg-no-repeat bg-cover bg-center">
 				<h1 className="text-2xl lg:text-4xl font-bold text-gray-300">
 					Raise funds for medical emergencies and social causes
 				</h1>
@@ -31,10 +74,17 @@ function Home() {
 				))}
 			</div>
 			<div>
-				<h1 className="underline text-xl font-semibold text-center px-5 mt-8 text-accentOrange">
+				<h1 className="underline text-xl lg:text-3xl font-semibold text-center px-5 mt-8 text-accentOrange">
 					Active Campaigns
 				</h1>
-				<CampaignCard campaign={campaign} />
+				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 ld:gap-8 justify-items-center md:justify-items-stretch px-6 md:px-10 my-8">
+					{campaigns.map((campaign) => (
+						<CampaignCard key={campaign.name} campaign={campaign} />
+					))}
+				</div>
+				<h4 className="text-gray-300 mb-10 lg:text-xl hover:text-accentOrange text-center">
+					Browse More
+				</h4>
 			</div>
 		</>
 	);

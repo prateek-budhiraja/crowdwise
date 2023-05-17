@@ -1,11 +1,20 @@
+import CategoryButton from "./CategoryButton";
+
 function CampaignCard({ campaign }) {
 	const goalPercentage = (campaign.raised / campaign.goal) * 100;
 
 	return (
-		<div className="m-4 rounded-lg border-2 border-gray-300 max-w-[500px]">
-			<img src={campaign.banner} alt="" />
+		<div className="rounded-lg border-2 border-gray-300 max-w-[500px]">
+			<img
+				className="max-h-[180px] w-full object-cover"
+				src={campaign.banner}
+				alt=""
+			/>
 			<div className="px-2 my-2">
-				<h4 className="text-gray-600 -mb-1 text-sm">{campaign.location}</h4>
+				<div className="flex justify-between items-center">
+					<h4 className="text-gray-600 -mb-1 text-sm">{campaign.location}</h4>
+					<CategoryButton xs category={campaign.category} />
+				</div>
 				<h3 className="text-lg font-medium text-gray-300 mt-2 leading-none">
 					{campaign.name}
 				</h3>

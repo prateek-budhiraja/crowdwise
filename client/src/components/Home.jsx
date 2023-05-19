@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { categories } from "../utils/categories";
 import CampaignCard from "./CampaignCard";
 import CategoryButton from "./CategoryButton";
@@ -64,13 +65,17 @@ function Home() {
 				<h1 className="text-2xl lg:text-4xl font-bold text-gray-300">
 					Raise funds for medical emergencies and social causes
 				</h1>
-				<button className="mt-5 lg:mt-10 lg:text-xl py-2 px-4 lg:px-6 rounded-full bg-lightGray font-medium text-accentOrange hover:bg-accentOrange hover:text-lightGray">
-					Create a Campaign 🚀
-				</button>
+				<Link to="start-a-campaign">
+					<button className="mt-5 lg:mt-10 lg:text-xl py-2 px-4 lg:px-6 rounded-full bg-lightGray font-medium text-accentOrange hover:bg-accentOrange hover:text-lightGray">
+						Create a Campaign 🚀
+					</button>
+				</Link>
 			</div>
 			<div className="mt-5 py-2 px-8 flex flex-row lg:justify-center overflow-x-scroll scrollbar-hide gap-2">
 				{Object.keys(categories).map((key) => (
-					<CategoryButton category={categories[key]} key={key} />
+					<Link to={`/c/${key}`} key={key}>
+						<CategoryButton category={categories[key]} />
+					</Link>
 				))}
 			</div>
 			<div>
@@ -82,9 +87,11 @@ function Home() {
 						<CampaignCard key={campaign.name} campaign={campaign} />
 					))}
 				</div>
-				<h4 className="text-gray-300 mb-10 lg:text-xl hover:text-accentOrange text-center">
-					Browse More
-				</h4>
+				<Link to="browse">
+					<h4 className="text-gray-300 mb-10 lg:text-xl hover:text-accentOrange text-center">
+						Browse More
+					</h4>
+				</Link>
 			</div>
 		</>
 	);

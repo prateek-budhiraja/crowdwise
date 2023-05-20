@@ -6,6 +6,7 @@ import Nav from "./Nav";
 
 const campaigns = [
 	{
+		slug: "austin_heart_transplant",
 		banner:
 			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
 		name: "Austin’s Life-Saving Heart Transplant Fund",
@@ -16,6 +17,7 @@ const campaigns = [
 		category: "Medical",
 	},
 	{
+		slug: "austin_heart_transplant_2",
 		banner:
 			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
 		name: "Austin’s Life-Saving Heart Transplant Fund",
@@ -26,6 +28,7 @@ const campaigns = [
 		category: "Medical",
 	},
 	{
+		slug: "austin_heart",
 		banner:
 			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
 		name: "Austin’s Life-Saving Heart Transplant Fund",
@@ -36,6 +39,7 @@ const campaigns = [
 		category: "Medical",
 	},
 	{
+		slug: "austin_heart_transplant_save",
 		banner:
 			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
 		name: "Austin’s Life-Saving Heart Transplant Fund",
@@ -46,6 +50,7 @@ const campaigns = [
 		category: "Medical",
 	},
 	{
+		slug: "austin_heart_transplant_life",
 		banner:
 			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
 		name: "Austin’s Life-Saving Heart Transplant Fund",
@@ -73,7 +78,7 @@ function Home() {
 			</div>
 			<div className="mt-5 py-2 px-8 flex flex-row lg:justify-center overflow-x-scroll scrollbar-hide gap-2">
 				{Object.keys(categories).map((key) => (
-					<Link to={`/c/${key}`} key={key}>
+					<Link className="shrink-0" to={`/c/${key}`} key={key}>
 						<CategoryButton category={categories[key]} />
 					</Link>
 				))}
@@ -84,7 +89,9 @@ function Home() {
 				</h1>
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 ld:gap-8 justify-items-center md:justify-items-stretch px-6 md:px-10 my-8">
 					{campaigns.map((campaign) => (
-						<CampaignCard key={campaign.name} campaign={campaign} />
+						<Link to={`/browse/${campaign.slug}`} key={campaign.slug}>
+							<CampaignCard campaign={campaign} />
+						</Link>
 					))}
 				</div>
 				<Link to="browse">

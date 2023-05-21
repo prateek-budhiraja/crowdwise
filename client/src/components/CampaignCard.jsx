@@ -1,3 +1,4 @@
+import formatMoneyINR from "../utils/formatMoneyINR";
 import CategoryButton from "./CategoryButton";
 
 function CampaignCard({ campaign }) {
@@ -25,7 +26,9 @@ function CampaignCard({ campaign }) {
 						style={{ width: `${goalPercentage}%` }}
 					></div>
 				</div>
-				<h4 className="text-gray-300 mt-1.5">₹ {campaign.raised} raised</h4>
+				<h4 className="text-gray-300 mt-1.5">
+					{formatMoneyINR(campaign.raised)} raised
+				</h4>
 			</div>
 		</div>
 	);

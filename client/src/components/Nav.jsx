@@ -10,7 +10,7 @@ function Nav() {
 
 	return (
 		<nav className="relative bg-bgGray flex justify-between list-none py-4 lg:py-6 px-4 lg:px-10 items-center">
-			<Link to="">
+			<Link to="/">
 				<img
 					src="/assets/logo.png"
 					alt="logo"
@@ -25,7 +25,7 @@ function Nav() {
 					<span className="hover:text-accentOrange">Browse</span>
 				</Link>
 			</div>
-			<Link to="login" className="hidden lg:inline-block">
+			<Link to="/login" className="hidden lg:inline-block">
 				<button className="py-1.5 px-5 bg-gray-300 font-medium text-accentOrange rounded-full hover:bg-accentOrange hover:text-gray-300">
 					Login
 				</button>
@@ -43,13 +43,13 @@ function Nav() {
 					<>
 						<div className="absolute bg-lightGray w-[20px] h-[20px] rotate-45 right-5 -bottom-[2px]"></div>
 						<div className="w-[180px] p-4 absolute bg-lightGray flex gap-1 flex-col right-4 -bottom-[100px] text-gray-400">
-							<Link to="start-a-campaign">
+							<Link to="/start-a-campaign">
 								<span>Start a Campaign</span>
 							</Link>
-							<Link to="browse">
+							<Link to="/browse">
 								<span>Browse</span>
 							</Link>
-							<Link to="login">
+							<Link to="/login">
 								<span className="text-accentOrange">Login</span>
 							</Link>
 						</div>

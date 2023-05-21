@@ -32,6 +32,7 @@ The Antoine Family
 
 Dimitri's Music Mixes
                     Dimitir's Instagram`,
+		donators: [{ Prateek: 10000 }, { Apple: 50000 }, { Anonymous: 1000 }],
 	});
 	const [readMore, setReadMore] = useState(false);
 	const goalPercentage = (campaignData.raised / campaignData.goal) * 100;
@@ -56,55 +57,115 @@ Dimitri's Music Mixes
 					Donate
 				</button>
 			</div>
-			<div className="px-4 mb-[100px]">
-				<img
-					className="w-full h-[300px] object-cover rounded"
-					src={campaignData.banner}
-					alt="campaign banner"
-				/>
-				<h2 className="mt-4 text-2xl font-semibold text-gray-300">
-					{campaignData.title}
-				</h2>
-				<div className="w-full bg-lightGray rounded-full h-1.5 mt-2">
-					<div
-						className="bg-accentOrange h-1.5 rounded-full"
-						style={{ width: `${goalPercentage}%` }}
-					></div>
+			<div className="flex mb-[100px] lg:mb-10 px-2 lg:px-20 gap-10">
+				<div className="lg:w-2/3">
+					<img
+						className="w-full h-[300px] lg:h-[450px] object-cover rounded"
+						src={campaignData.banner}
+						alt="campaign banner"
+					/>
+					<h2 className="mt-4 text-2xl lg:text-3xl font-semibold text-gray-300">
+						{campaignData.title}
+					</h2>
+					<div className="w-full bg-lightGray rounded-full h-1.5 lg:h-2 mt-2 lg:hidden">
+						<div
+							className="bg-accentOrange h-1.5 lg:h-2 rounded-full"
+							style={{ width: `${goalPercentage}%` }}
+						></div>
+					</div>
+					<h4 className="mt-1.5 text-lg text-gray-500 lg:hidden">{`${formatMoneyINR(
+						campaignData.raised
+					)} raised of ${formatMoneyINR(campaignData.goal)} goal`}</h4>
+					<hr className="bg-gray-300 rounded-full my-3" />
+					<div className="flex items-center gap-2 font-sm text-gray-400">
+						<img src="/assets/user.png" alt="user" className="w-5 h-[100%]" />
+						<p>{campaignData.created_by} is organizing this fundraiser.</p>
+					</div>
+					<hr className="bg-gray-300 rounded-full my-3" />
+					<div className="text-gray-300 flex items-center gap-4">
+						<h3>{campaignAge} days ago</h3>
+						<div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+						<Link to={`/c/${campaignData.category}`}>
+							{categories[campaignData.category]}
+						</Link>
+					</div>
+					<hr className="bg-gray-300 rounded-full my-3" />
+					<span className="text-gray-300">
+						{campaignData.description.slice(0, 350)}
+						{readMore ? (
+							<span>{campaignData.description.slice(350)}</span>
+						) : (
+							<>
+								<span>...</span>
+								<span
+									onClick={() => setReadMore(true)}
+									className="cursor-pointer text-gray-300 mt-2 underline block"
+								>
+									Read more
+								</span>
+							</>
+						)}
+					</span>
+					<hr className="bg-gray-300 rounded-full my-3" />
+					<div className="text-gray-300 lg:hidden">
+						<h2 className="text-gray-300 text-xl font-semibold mb-2">
+							Donations
+						</h2>
+						<ul>
+							{campaignData.donators.map((donator, index) => (
+								<li key={index} className="mb-1 flex gap-6 items-center">
+									<div className="text-lg bg-lightGray px-3 py-1 rounded-full">
+										{Object.keys(donator)[0].slice(0, 1)}
+									</div>
+									<div>
+										<p>{Object.keys(donator)[0]}</p>
+										<p>{formatMoneyINR(Object.values(donator)[0])}</p>
+									</div>
+								</li>
+							))}
+						</ul>
+						<button className="mt-2 py-2 rounded-full w-full border-2 border-accentOrange hover:bg-accentOrange">
+							See all
+						</button>
+					</div>
 				</div>
-				<h4 className="mt-1.5 text-lg text-gray-500">{`${formatMoneyINR(
-					campaignData.raised
-				)} raised of ${formatMoneyINR(campaignData.goal)} goal`}</h4>
-				<hr className="bg-gray-300 rounded-full my-3" />
-				<div className="flex items-center gap-2 font-sm text-gray-400">
-					<img src="/assets/user.png" alt="user" className="w-5 h-[100%]" />
-					<p>{campaignData.created_by} is organizing this fundraiser.</p>
+				<div className="hidden lg:block p-4 w-1/3 h-[450px] border-2 rounded-xl border-gray-300">
+					<div className="w-full bg-lightGray rounded-full h-1.5 lg:h-2 mt-2">
+						<div
+							className="bg-accentOrange h-1.5 lg:h-2 rounded-full"
+							style={{ width: `${goalPercentage}%` }}
+						></div>
+					</div>
+					<h4 className="mt-1.5 text-lg text-gray-500">{`${formatMoneyINR(
+						campaignData.raised
+					)} raised of ${formatMoneyINR(campaignData.goal)} goal`}</h4>
+
+					<div className="flex flex-col gap-2 mt-2">
+						<button className="col-span-1 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300">
+							Share
+						</button>
+						<button className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300">
+							Donate
+						</button>
+					</div>
+
+					<ul className="mt-8 text-gray-300">
+						{campaignData.donators.map((donator, index) => (
+							<li key={index} className="mb-1 flex gap-6 items-center">
+								<div className="text-lg bg-lightGray px-3 py-1 rounded-full">
+									{Object.keys(donator)[0].slice(0, 1)}
+								</div>
+								<div>
+									<p>{Object.keys(donator)[0]}</p>
+									<p>{formatMoneyINR(Object.values(donator)[0])}</p>
+								</div>
+							</li>
+						))}
+					</ul>
+					<button className="mt-2 py-2 rounded-full w-full border-2 text-gray-300 border-accentOrange hover:bg-accentOrange">
+						See all
+					</button>
 				</div>
-				<hr className="bg-gray-300 rounded-full my-3" />
-				<div className="text-gray-300 flex items-center gap-4">
-					<h3>{campaignAge} days ago</h3>
-					<div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
-					<Link to={campaignData.category}>
-						{categories[campaignData.category]}
-					</Link>
-				</div>
-				<hr className="bg-gray-300 rounded-full my-3" />
-				<span className="text-gray-300">
-					{campaignData.description.slice(0, 350)}
-					{readMore ? (
-						<span>{campaignData.description.slice(350)}</span>
-					) : (
-						<>
-							<span>...</span>
-							<span
-								onClick={() => setReadMore(true)}
-								className="cursor-pointer text-gray-300 mt-2 underline block"
-							>
-								Read more
-							</span>
-						</>
-					)}
-				</span>
-				<hr className="bg-gray-300 rounded-full my-3" />
 			</div>
 		</>
 	);

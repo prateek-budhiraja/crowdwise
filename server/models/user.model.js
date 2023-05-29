@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import JWT from "jsonwebtoken";
 import config from "../config/index.js";
-import role from "../util/authRole.js";
+import role from "../utils/authRole.js";
 
 const userSchema = mongoose.Schema({
 	name: {

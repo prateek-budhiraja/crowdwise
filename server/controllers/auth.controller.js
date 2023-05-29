@@ -132,13 +132,35 @@ export const logout = (req, res) => {
 };
 
 /**************************************************
- * @UPDATE_ROLE
+ * @CREATE_POWER_USER
  * @REQUEST_TYPE PUT
  * @route http://localhost:<PORT>/api/auth/update-role
  * @description Update a user's role
- * @parameters role, credentials
+ * @parameters role, email
  * @returns User
  **************************************************/
-export function updateRole(req, res) {
-	console.log("updateRole");
-}
+export const createPowerUser = asyncHandler(async (req, res) => {
+	const { email } = req.body;
+
+	const user = await User.findOne({ email });
+	if (!user) {
+		throw new Error("User not found");
+	}
+
+	if (!(user?.phone_number || user?.aadhar_number)) {
+		throw new Error("User has not completed KYC");
+	}
+
+	if (user.role === authRole.POWER) {
+		throw new Error("User is already a power user");
+	}
+
+	user.role = authRole.POWER;
+	await user.save();
+
+	return res.status(200).json({
+		success: true,
+		message: "User role updated successfully",
+		user,
+	});
+});

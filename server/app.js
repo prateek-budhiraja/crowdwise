@@ -3,6 +3,7 @@ import dbConnect from "./config/dbConnect.js";
 import cookieParser from "cookie-parser";
 import homeRouter from "./routes/home.route.js";
 import authRouter from "./routes/auth.route.js";
+import campaignRouter from "./routes/campaign.route.js";
 
 dbConnect();
 const app = express();
@@ -13,5 +14,6 @@ app.use(cookieParser());
 
 app.use("/api", homeRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/campaigns", campaignRouter);
 
 export default app;

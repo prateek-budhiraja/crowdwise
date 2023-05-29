@@ -27,7 +27,7 @@ const campaignSchema = mongoose.Schema(
 			default: 0,
 		},
 		created_by: {
-			type: Schema.Types.ObjectId,
+			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 			required: [true, "Provide campaign admin!"],
 		},

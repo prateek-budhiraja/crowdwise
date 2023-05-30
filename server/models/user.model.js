@@ -55,6 +55,10 @@ const userSchema = mongoose.Schema({
 				type: Number,
 				required: [true, "Donated amount is required"],
 			},
+			payment_id: {
+				type: String,
+				required: [true, "Payment id is required"],
+			},
 		},
 	],
 });

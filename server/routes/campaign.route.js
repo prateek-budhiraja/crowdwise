@@ -4,8 +4,8 @@ import {
 	createCampaign,
 	getCampaign,
 	getCampaigns,
-	// updateCampaign,
-	// deleteCampaign,
+	donateToCampaign,
+	verifyPayment,
 } from "../controllers/campaign.controller.js";
 
 const router = Router();
@@ -13,7 +13,7 @@ const router = Router();
 router.get("/", getCampaigns);
 router.get("/:slug", getCampaign);
 router.post("/", createCampaign);
-// router.put("/:slug", updateCampaign);
-// router.delete("/:slug", deleteCampaign);
+router.post("/:slug/donate", donateToCampaign);
+router.post("/:slug/donate/verify", verifyPayment);
 
 export default router;

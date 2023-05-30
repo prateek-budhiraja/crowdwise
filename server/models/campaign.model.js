@@ -58,6 +58,18 @@ const campaignSchema = mongoose.Schema(
 					type: Number,
 					required: [true, "Donated amount is required"],
 				},
+				order_id: {
+					type: String,
+					required: [true, "Order id is required"],
+				},
+				payment_id: {
+					type: String,
+					required: [true, "Payment id is required"],
+				},
+				verified: {
+					type: Boolean,
+					default: false,
+				},
 			},
 		],
 	},

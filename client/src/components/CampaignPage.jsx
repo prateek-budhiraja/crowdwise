@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import Nav from "./Nav";
 import { useEffect, useState } from "react";
@@ -40,11 +41,41 @@ Dimitri's Music Mixes
 		(new Date() - new Date(campaignData.campaign_start_date)) /
 			(1000 * 60 * 60 * 24)
 	);
-	// function fetchData() {
-	// 	setCampaignData();
-	// }
 
-	// fetchData();
+	const handlePayment = async (amount) => {
+		const { data } = await axios.post(
+			"http://localhost:4000/api/campaigns/abcd/donate",
+			{ amount }
+		);
+
+		if (!data.success) return alert("Something went wrong");
+
+		const { RAZORPAY_KEY_ID } = data;
+		const { id, amount_due } = data.data;
+		const { name, email, phone_number } = data.user;
+
+		var options = {
+			key: RAZORPAY_KEY_ID,
+			amount: amount_due,
+			currency: "INR",
+			name: "CrowdWise",
+			description: "Donate to a campaign",
+			image: "/assets/logo.png",
+			order_id: id,
+			callback_url: "http://localhost:4000/api/campaigns/abcd/donate/verify",
+			prefill: {
+				name,
+				email,
+				contact: phone_number || "",
+			},
+			theme: {
+				color: "#181818",
+			},
+		};
+		const razorpay = window.Razorpay(options);
+
+		razorpay.open();
+	};
 
 	return (
 		<>
@@ -53,7 +84,10 @@ Dimitri's Music Mixes
 				<button className="col-span-1 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300">
 					Share
 				</button>
-				<button className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300">
+				<button
+					onClick={() => handlePayment(1000)}
+					className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
+				>
 					Donate
 				</button>
 			</div>

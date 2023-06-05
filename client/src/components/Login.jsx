@@ -1,7 +1,23 @@
 import { GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 function Login() {
+	const navigate = useNavigate();
+
+	const handleGoogleLogin = async (credentialResponse) => {
+		console.log("in handle google login", credentialResponse);
+		const res = await axios.post("/api/auth/login-google", {
+			credential: credentialResponse.credential,
+		});
+		if (res.data.success) {
+			toast.success("Logged in successfully");
+			navigate("/");
+		}
+	};
+
 	return (
 		<div className="text-center mt-14 p-2">
 			<Link to="/">
@@ -17,11 +33,11 @@ function Login() {
 			<div className="mt-8 lg:mt-[80px] flex flex-col gap-5 items-center">
 				<div className="mx-auto">
 					<GoogleLogin
-						onSuccess={(credentialResponse) => {
-							console.log(credentialResponse);
-						}}
+						onSuccess={(credentialResponse) =>
+							handleGoogleLogin(credentialResponse)
+						}
 						onError={() => {
-							console.log("Login Failed");
+							toast.error("Something went wrong");
 						}}
 						useOneTap
 						auto_select

@@ -18,10 +18,10 @@ function Nav() {
 				/>
 			</Link>
 			<div className="hidden lg:flex flex-fol gap-10 text-gray-300">
-				<Link to="start-a-campaign">
+				<Link to="/start-a-campaign">
 					<span className="hover:text-accentOrange">Start a Campaign</span>
 				</Link>
-				<Link to="browse">
+				<Link to="/browse">
 					<span className="hover:text-accentOrange">Browse</span>
 				</Link>
 			</div>

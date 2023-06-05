@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
 function Login() {
-	const { user, setUser } = useContext(UserContext);
+	const { setUser } = useContext(UserContext);
 	const navigate = useNavigate();
 
 	const handleGoogleLogin = async (credentialResponse) => {
@@ -56,6 +56,7 @@ function Login() {
 					/>
 				</div>
 				<button
+					onClick={handleAnomymousLogin}
 					className="rounded bg-white p-2 font-medium text-gray-700
         "
 				>

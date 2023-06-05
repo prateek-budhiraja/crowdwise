@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { categories } from "../utils/categories";
 import { toast } from "react-hot-toast";
 import Error from "./Error";
+import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function StartACampaign() {
+	const { user } = useContext(UserContext);
 	const [data, setData] = useState({
 		title: "Campaign Title",
 		description: "Your message...",
@@ -22,31 +25,44 @@ function StartACampaign() {
 		setStep((prevState) => prevState - 1);
 	}
 
-	switch (step) {
-		case 0:
-			return <Initial nextPage={nextPage} setData={setData} data={data} />;
-		case 1:
-			return (
-				<GetTextInformation
-					nextPage={nextPage}
-					prevPage={prevPage}
-					data={data}
-					setData={setData}
-				/>
-			);
-		case 2:
-			return (
-				<SetMoreInfo
-					data={data}
-					prevPage={prevPage}
-					setData={setData}
-					nextPage={nextPage}
-				/>
-			);
-		case 3:
-			return <Submit data={data} />;
-		default:
-			return <Error />;
+	if (!user) {
+		toast.error("You need to be logged in to start a campaign!");
+
+		return <LoginMessage />;
+	} else if (user?.role !== "POWER") {
+		if (user.email === "anonymous@crowdwise.com") {
+			toast.error("Guest Users cannot start a campaign!");
+			return <LoginMessage />;
+		}
+		toast.error("You need to verify your email to start a campaign!");
+		return <LoginMessage verify />;
+	} else {
+		switch (step) {
+			case 0:
+				return <Initial nextPage={nextPage} setData={setData} data={data} />;
+			case 1:
+				return (
+					<GetTextInformation
+						nextPage={nextPage}
+						prevPage={prevPage}
+						data={data}
+						setData={setData}
+					/>
+				);
+			case 2:
+				return (
+					<SetMoreInfo
+						data={data}
+						prevPage={prevPage}
+						setData={setData}
+						nextPage={nextPage}
+					/>
+				);
+			case 3:
+				return <Submit data={data} />;
+			default:
+				return <Error />;
+		}
 	}
 }
 
@@ -253,6 +269,27 @@ function Submit({ data }) {
 	}
 
 	return <h1>Loading...</h1>;
+}
+
+function LoginMessage({ verify }) {
+	const navigate = useNavigate();
+	return (
+		<div className="flex justify-center items-center h-screen">
+			<div className="text-center">
+				<h1 className="text-3xl font-bold text-accentOrange mb-5">
+					{verify
+						? "Only Verified users can start a Campaign!"
+						: "Only Logged in Users can create a Campaign!"}
+				</h1>
+				<button
+					onClick={() => navigate(verify ? "/email-verification" : "/login")}
+					className="py-1.5 px-5 bg-gray-300 font-medium text-accentOrange rounded-full hover:bg-accentOrange hover:text-gray-300"
+				>
+					{verify ? "Request Verification" : "Login"}
+				</button>
+			</div>
+		</div>
+	);
 }
 
 export default StartACampaign;

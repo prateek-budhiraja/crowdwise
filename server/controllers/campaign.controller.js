@@ -56,6 +56,10 @@ export const getCampaign = asyncHandler(async (req, res) => {
 export const createCampaign = asyncHandler(async (req, res) => {
 	const { title, description, goal, category, banner } = req.body;
 
+	if (!(title && description && goal && category)) {
+		throw new Error("Please fill all the fields");
+	}
+
 	const slug = title.toLowerCase().split(" ").join("-");
 
 	const slugAlreadyExist = await Campaign.findOne({ slug });
@@ -140,7 +144,7 @@ export const donateToCampaign = asyncHandler(async (req, res) => {
 /**************************************************
  * @VERIFY_PAYMENT
  * @REQUEST_TYPE POST
- * @route http://localhost:<PORT>/api/campaigns/
+ * @route http://localhost:<PORT>/api/campaigns/:slug/donate/verify
  * @description Verify payment
  * @parameters
  * @returns
@@ -176,12 +180,14 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 	});
 	await campaign.save();
 
-	req.user.donations.push({
-		campaign_name: campaign.title,
-		campaign_slug: campaign.slug,
-		amount_donated: amount_donated,
-		payment_id: razorpay_payment_id,
-	});
+	if (req?.user?.email !== "anonymous@crowdwise.com") {
+		req.user.donations.push({
+			campaign_name: campaign.title,
+			campaign_slug: campaign.slug,
+			amount_donated: amount_donated,
+			payment_id: razorpay_payment_id,
+		});
+	}
 
 	return res.status(200).json({
 		success: true,

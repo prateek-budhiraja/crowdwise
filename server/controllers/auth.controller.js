@@ -27,46 +27,20 @@ export const loginWithGoogle = asyncHandler(async (req, res) => {
 
 	const { name, email, picture } = gUser;
 
-	let user = await User.find({ email });
-
-	if (!user) {
-		throw new Error("Unable to login!");
-	}
+	let user = await User.findOne({ email });
 
 	let token;
 
-	if (user.length > 0) {
-		token = JWT.sign(
-			{
-				_id: user._id,
-				email: user.email,
-				role: user.role,
-			},
-			config.JWT_SECRET,
-			{
-				expiresIn: config.JWT_EXPIRY,
-			}
-		);
-	} else {
+	if (!user) {
 		user = await User.create({
 			name,
 			email,
 			profile_picture: picture,
 			role: authRole.BASIC,
 		});
-
-		token = JWT.sign(
-			{
-				_id: user._id,
-				email: user.email,
-				role: user.role,
-			},
-			config.JWT_SECRET,
-			{
-				expiresIn: config.JWT_EXPIRY,
-			}
-		);
 	}
+
+	token = await user.getJwtToken();
 
 	res.cookie("token", token, options);
 
@@ -88,6 +62,7 @@ export const loginAnonymous = asyncHandler((_req, res) => {
 	const token = JWT.sign(
 		{
 			_id: nanoid(),
+			name: "Anonymous",
 			email: "anonymous@crowdwise.com",
 			role: authRole.BASIC,
 		},
@@ -101,7 +76,6 @@ export const loginAnonymous = asyncHandler((_req, res) => {
 
 	res.status(201).json({
 		success: true,
-		token,
 		user: {
 			_id: nanoid(),
 			email: "anonymous@crowdwise.com",

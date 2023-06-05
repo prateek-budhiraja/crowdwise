@@ -1,12 +1,27 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import useOnclickOutside from "react-cool-onclickoutside";
+import { UserContext } from "../context/UserContext";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function Nav() {
+	const { user, setUser } = useContext(UserContext);
+
 	const [isNavOpen, setIsNavOpen] = useState(false);
 	const ref = useOnclickOutside(() => {
 		setIsNavOpen(false);
 	});
+
+	async function handleLogout() {
+		const res = await axios.get("/api/auth/logout");
+		if (res.data.success) {
+			setUser(null);
+			toast.success("Logged out successfully");
+		} else {
+			toast.error("Something went wrong");
+		}
+	}
 
 	return (
 		<nav className="relative bg-bgGray flex justify-between list-none py-4 lg:py-6 px-4 lg:px-10 items-center">
@@ -25,11 +40,20 @@ function Nav() {
 					<span className="hover:text-accentOrange">Browse</span>
 				</Link>
 			</div>
-			<Link to="/login" className="hidden lg:inline-block">
-				<button className="py-1.5 px-5 bg-gray-300 font-medium text-accentOrange rounded-full hover:bg-accentOrange hover:text-gray-300">
-					Login
+			{!user ? (
+				<Link to="/login" className="hidden lg:inline-block">
+					<button className="py-1.5 px-5 bg-gray-300 font-medium text-accentOrange rounded-full hover:bg-accentOrange hover:text-gray-300">
+						Login
+					</button>
+				</Link>
+			) : (
+				<button
+					onClick={handleLogout}
+					className="hidden lg:inline-block py-1.5 px-5 bg-gray-300 font-medium text-accentOrange rounded-full hover:bg-accentOrange hover:text-gray-300"
+				>
+					Logout
 				</button>
-			</Link>
+			)}
 			<div ref={ref} className="lg:hidden">
 				<div
 					onClick={() => setIsNavOpen((prevState) => !prevState)}
@@ -49,9 +73,18 @@ function Nav() {
 							<Link to="/browse">
 								<span>Browse</span>
 							</Link>
-							<Link to="/login">
-								<span className="text-accentOrange">Login</span>
-							</Link>
+							{!user ? (
+								<Link to="/login">
+									<span className="text-accentOrange">Login</span>
+								</Link>
+							) : (
+								<span
+									onClick={handleLogout}
+									className="cursor-pointer text-accentOrange"
+								>
+									Logout
+								</span>
+							)}
 						</div>
 					</>
 				) : (

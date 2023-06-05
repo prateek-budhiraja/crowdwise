@@ -7,23 +7,31 @@ import CampaignPage from "./components/CampaignPage";
 import StartACampaign from "./components/StartACampaign";
 import axios from "axios";
 import config from "./utils/constants.js";
+import { UserContext } from "./context/UserContext";
+import { useMemo, useState } from "react";
 
 axios.defaults.baseURL = config.SERVER_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
+	const [user, setUser] = useState(null);
+
+	const authValue = useMemo(() => ({ user, setUser }), [user, setUser]);
+
 	return (
 		<>
 			<BrowserRouter>
-				<GoogleOAuthProvider clientId={config.GOOGLE_CLIENT_ID}>
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/start-a-campaign" element={<StartACampaign />} />
-						<Route path="/c/:category" element={<CategoryPage />} />
-						<Route path="/browse/:campaign_slug" element={<CampaignPage />} />
-					</Routes>
-				</GoogleOAuthProvider>
+				<UserContext.Provider value={authValue}>
+					<GoogleOAuthProvider clientId={config.GOOGLE_CLIENT_ID}>
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/login" element={<Login />} />
+							<Route path="/start-a-campaign" element={<StartACampaign />} />
+							<Route path="/c/:category" element={<CategoryPage />} />
+							<Route path="/browse/:campaign_slug" element={<CampaignPage />} />
+						</Routes>
+					</GoogleOAuthProvider>
+				</UserContext.Provider>
 			</BrowserRouter>
 		</>
 	);

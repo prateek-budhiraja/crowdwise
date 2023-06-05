@@ -1,5 +1,5 @@
 const config = {
-	SERVER_URL: import.meta.env.VITE_SERVER_URL || "http://localhost:3000",
+	SERVER_URL: import.meta.env.VITE_BACKEND_URL,
 	GOOGLE_CLIENT_ID: import.meta.env.VITE_GOOGLE_clientId,
 };
 

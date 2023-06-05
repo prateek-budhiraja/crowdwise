@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 function Login() {
+	const { user, setUser } = useContext(UserContext);
 	const navigate = useNavigate();
 
 	const handleGoogleLogin = async (credentialResponse) => {
@@ -12,9 +15,19 @@ function Login() {
 		const res = await axios.post("/api/auth/login-google", {
 			credential: credentialResponse.credential,
 		});
-		if (res.data.success) {
-			toast.success("Logged in successfully");
+		if (res?.data?.success) {
 			navigate("/");
+			setUser(res.data.user);
+			toast.success("Logged in successfully");
+		}
+	};
+
+	const handleAnomymousLogin = async () => {
+		const res = await axios.post("/api/auth/login-anonymous");
+		if (res.data.success) {
+			navigate("/");
+			setUser(res.data.user);
+			toast.success("Logged in anonymously");
 		}
 	};
 
@@ -40,7 +53,6 @@ function Login() {
 							toast.error("Something went wrong");
 						}}
 						useOneTap
-						auto_select
 					/>
 				</div>
 				<button

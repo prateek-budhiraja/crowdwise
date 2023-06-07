@@ -1,68 +1,39 @@
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { categories } from "../utils/categories";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import Nav from "./Nav";
 import CampaignCard from "./CampaignCard";
 import CategoryButton from "./CategoryButton";
-import Nav from "./Nav";
+import { CampaignContext } from "../context/CampaignContext";
+import { categories } from "../utils/categories";
 
-const campaigns = [
-	{
-		slug: "austin_heart_transplant",
-		banner:
-			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
-		name: "Austin’s Life-Saving Heart Transplant Fund",
-		location: "LOS ANGELES, CA",
-		created_by: "Austin",
-		goal: 100000,
-		raised: 80000,
-		category: "Medical",
-	},
-	{
-		slug: "austin_heart_transplant_2",
-		banner:
-			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
-		name: "Austin’s Life-Saving Heart Transplant Fund",
-		location: "LOS ANGELES, CA",
-		created_by: "Austin",
-		goal: 100000,
-		raised: 80000,
-		category: "Medical",
-	},
-	{
-		slug: "austin_heart",
-		banner:
-			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
-		name: "Austin’s Life-Saving Heart Transplant Fund",
-		location: "LOS ANGELES, CA",
-		created_by: "Austin",
-		goal: 100000,
-		raised: 80000,
-		category: "Medical",
-	},
-	{
-		slug: "austin_heart_transplant_save",
-		banner:
-			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
-		name: "Austin’s Life-Saving Heart Transplant Fund",
-		location: "LOS ANGELES, CA",
-		created_by: "Austin",
-		goal: 100000,
-		raised: 80000,
-		category: "Medical",
-	},
-	{
-		slug: "austin_heart_transplant_life",
-		banner:
-			"https://img.freepik.com/free-photo/senior-woman-with-walking-frame-hospital-waiting-room-rehabilitation-treatment_482257-8586.jpg?w=740&t=st=1684258449~exp=1684259049~hmac=25d3d1f7bd41d161f076ed046daef70555bcc5fb7612574ed8317759cf2f206b",
-		name: "Austin’s Life-Saving Heart Transplant Fund",
-		location: "LOS ANGELES, CA",
-		created_by: "Austin",
-		goal: 100000,
-		raised: 80000,
-		category: "Medical",
-	},
-];
+const Home = () => {
+	const { setCampaigns } = useContext(CampaignContext);
+	const [filteredCampaigns, setFilteredCampaigns] = useState([]); // [1]
 
-function Home() {
+	useEffect(() => {
+		fetchCampaigns();
+	}, []);
+
+	const fetchCampaigns = async () => {
+		try {
+			const { data } = await axios.get("/api/campaigns");
+
+			if (data?.success) {
+				setCampaigns(data?.data);
+				const filteredCampaigns = data?.data?.slice(0, 8);
+				setFilteredCampaigns(filteredCampaigns);
+			} else {
+				toast.error("Failed to load campaigns!");
+			}
+		} catch (error) {
+			toast.error("Failed to load campaigns!", {
+				duration: 10000,
+			});
+		}
+	};
+
 	return (
 		<>
 			<Nav />
@@ -70,14 +41,14 @@ function Home() {
 				<h1 className="text-2xl lg:text-4xl font-bold text-gray-300">
 					Raise funds for medical emergencies and social causes
 				</h1>
-				<Link to="start-a-campaign">
+				<Link to="/start-a-campaign">
 					<button className="mt-5 lg:mt-10 lg:text-xl py-2 px-4 lg:px-6 rounded-full bg-lightGray font-medium text-accentOrange hover:bg-accentOrange hover:text-lightGray">
 						Create a Campaign 🚀
 					</button>
 				</Link>
 			</div>
 			<div className="mt-5 py-2 px-8 flex flex-row lg:justify-center overflow-x-scroll scrollbar-hide gap-2">
-				{Object.keys(categories).map((key) => (
+				{Object.keys(categories)?.map((key) => (
 					<Link className="shrink-0" to={`/c/${key}`} key={key}>
 						<CategoryButton category={categories[key]} />
 					</Link>
@@ -88,13 +59,13 @@ function Home() {
 					Active Campaigns
 				</h1>
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 ld:gap-8 justify-items-center md:justify-items-stretch px-6 md:px-10 my-8">
-					{campaigns.map((campaign) => (
-						<Link to={`/browse/${campaign.slug}`} key={campaign.slug}>
+					{filteredCampaigns.map((campaign) => (
+						<Link to={`/browse/${campaign?.slug}`} key={campaign?.slug}>
 							<CampaignCard campaign={campaign} />
 						</Link>
 					))}
 				</div>
-				<Link to="browse">
+				<Link to="/browse">
 					<h4 className="text-gray-300 mb-10 lg:text-xl hover:text-accentOrange text-center">
 						Browse More
 					</h4>
@@ -102,6 +73,6 @@ function Home() {
 			</div>
 		</>
 	);
-}
+};
 
 export default Home;

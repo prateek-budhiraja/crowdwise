@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import Error from "./Error";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function StartACampaign() {
 	const { user } = useContext(UserContext);
@@ -291,5 +292,34 @@ function LoginMessage({ verify }) {
 		</div>
 	);
 }
+
+// PropTypes
+Initial.propTypes = {
+	nextPage: PropTypes.func,
+	setData: PropTypes.func,
+	data: PropTypes.object,
+};
+
+GetTextInformation.propTypes = {
+	nextPage: PropTypes.func,
+	prevPage: PropTypes.func,
+	data: PropTypes.object,
+	setData: PropTypes.func,
+};
+
+SetMoreInfo.propTypes = {
+	nextPage: PropTypes.func,
+	prevPage: PropTypes.func,
+	data: PropTypes.object,
+	setData: PropTypes.func,
+};
+
+Submit.propTypes = {
+	data: PropTypes.object,
+};
+
+LoginMessage.propTypes = {
+	verify: PropTypes.bool,
+};
 
 export default StartACampaign;

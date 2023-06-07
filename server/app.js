@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
-import dbConnect from "./config/dbConnect.js";
 import cookieParser from "cookie-parser";
+import config from "./config/index.js";
+import dbConnect from "./config/dbConnect.js";
 import homeRouter from "./routes/home.route.js";
 import authRouter from "./routes/auth.route.js";
 import campaignRouter from "./routes/campaign.route.js";
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
 	cors({
-		origin: process.env.CLIENT_URL || "http://localhost:3000",
+		origin: config.CLIENT_URL,
 		credentials: true,
 	})
 );

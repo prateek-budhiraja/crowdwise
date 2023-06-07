@@ -15,6 +15,7 @@ export const isLoggedIn = asyncHandler(async (req, _res, next) => {
 	}
 
 	if (!token) {
+		console.log("No token found");
 		throw new Error("Not authorized to access this route");
 	}
 

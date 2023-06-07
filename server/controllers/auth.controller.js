@@ -15,6 +15,7 @@ import { options } from "../config/cookieOptions.js";
  * @returns User
  **************************************************/
 export const loginWithGoogle = asyncHandler(async (req, res) => {
+	console.log("login with google");
 	const { credential } = req.body;
 	if (!credential) {
 		throw new Error("No credential provided");
@@ -41,6 +42,8 @@ export const loginWithGoogle = asyncHandler(async (req, res) => {
 	}
 
 	token = await user.getJwtToken();
+
+	console.log("logged in", token);
 
 	res.cookie("token", token, options);
 

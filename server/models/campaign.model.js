@@ -31,6 +31,10 @@ const campaignSchema = mongoose.Schema(
 			ref: "User",
 			required: [true, "Provide campaign admin!"],
 		},
+		created_by_name: {
+			type: String,
+			required: [true, "Provide campaign admin name!"],
+		},
 		banner: {
 			type: String,
 			require: [true, "Provide Campaign banner!"],
@@ -64,7 +68,6 @@ const campaignSchema = mongoose.Schema(
 				},
 				payment_id: {
 					type: String,
-					required: [true, "Payment id is required"],
 				},
 				verified: {
 					type: Boolean,

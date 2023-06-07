@@ -15,6 +15,6 @@ router.get("/", getCampaigns);
 router.get("/:slug", getCampaign);
 router.post("/", isLoggedIn, isPowerUser, createCampaign);
 router.post("/:slug/donate", isLoggedIn, donateToCampaign);
-router.post("/:slug/donate/verify", verifyPayment);
+router.post("/:slug/donate/verify", isLoggedIn, verifyPayment);
 
 export default router;

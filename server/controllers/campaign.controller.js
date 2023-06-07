@@ -75,6 +75,7 @@ export const createCampaign = asyncHandler(async (req, res) => {
 		banner,
 		slug,
 		created_by: req.user._id,
+		created_by_name: req.user.name,
 	});
 
 	if (!campaign) {
@@ -121,7 +122,7 @@ export const donateToCampaign = asyncHandler(async (req, res) => {
 		throw new Error("Order could not be created");
 	}
 
-	campaign.donations.push({
+	campaign.donators.push({
 		donator_name: req.user.name,
 		donator_email: req.user.email,
 		amount_donated: amount,
@@ -129,15 +130,17 @@ export const donateToCampaign = asyncHandler(async (req, res) => {
 		order_id: order.id,
 	});
 
+	const updated = await campaign.save();
+
+	if (!updated) {
+		throw new Error("Campaign could not be updated");
+	}
+
 	return res.status(200).json({
 		success: true,
 		data: order,
 		RAZORPAY_KEY_ID: config.RAZORPAY_KEY_ID,
-		user: {
-			name: "Anonymous",
-			email: "anonymous@crowdwise.com",
-			phone_number: "9999999999",
-		},
+		user: req.user,
 	});
 });
 
@@ -165,13 +168,15 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 		throw new Error("Invalid payment");
 	}
 
-	const campaign = Campaign.findOne({ slug });
+	const campaign = await Campaign.findOne({ slug });
 	if (!campaign) {
 		throw new Error("No campaign found");
 	}
 
+	console.log(campaign.donators);
+
 	let amount_donated = 0;
-	campaign.donations.forEach((donation) => {
+	campaign?.donators.forEach((donation) => {
 		if (donation.order_id === razorpay_order_id) {
 			amount_donated = donation.amount_donated;
 			donation.verified = true;
@@ -181,16 +186,21 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 	await campaign.save();
 
 	if (req?.user?.email !== "anonymous@crowdwise.com") {
-		req.user.donations.push({
+		console.log("setting user donations", req.user);
+		req?.user?.donations.push({
 			campaign_name: campaign.title,
 			campaign_slug: campaign.slug,
 			amount_donated: amount_donated,
 			payment_id: razorpay_payment_id,
 		});
+
+		const updatedUser = await req.user.save();
+		if (!updatedUser) {
+			throw new Error("Payment could not be updated");
+		}
 	}
 
-	return res.status(200).json({
-		success: true,
-		data: "Payment verified",
-	});
+	res.redirect(
+		`${config.CLIENT_URL}/paymentsuccess?reference=${razorpay_payment_id}`
+	);
 });

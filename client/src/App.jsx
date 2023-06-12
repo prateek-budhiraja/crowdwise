@@ -9,7 +9,7 @@ import axios from "axios";
 import config from "./utils/constants.js";
 import { UserContext } from "./context/UserContext";
 import { CampaignContext } from "./context/CampaignContext";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Browse from "./components/Browse";
 
 axios.defaults.baseURL = config.SERVER_URL;
@@ -24,6 +24,21 @@ function App() {
 		() => ({ campaigns, setCampaigns }),
 		[campaigns, setCampaigns]
 	);
+
+	useEffect(() => {
+		const fetchUser = async () => {
+			try {
+				const { data } = await axios.post("/api/auth/validate");
+				if (data?.success) {
+					setUser(data?.user);
+				}
+			} catch (error) {
+				console.log("Failed to fetch user!");
+			}
+		};
+
+		fetchUser();
+	}, []);
 
 	return (
 		<>

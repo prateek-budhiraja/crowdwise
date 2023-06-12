@@ -1,9 +1,13 @@
 import PropTypes from "prop-types";
-import CategoryButton from "./CategoryButton";
 import formatMoneyINR from "../utils/formatMoneyINR";
+import CategoryButton from "./CategoryButton";
 
 const CampaignCard = ({ campaign }) => {
-	const goalPercentage = (campaign?.raised / campaign?.goal) * 100;
+	const raised = campaign?.donators.reduce(
+		(acc, donation) => acc + donation.amount_donated,
+		0
+	);
+	const goalPercentage = (raised / campaign?.goal) * 100;
 
 	return (
 		<div className="rounded-lg border-2 border-gray-300 max-w-[500px] hover:scale-105 ease-in duration-200">
@@ -25,11 +29,14 @@ const CampaignCard = ({ campaign }) => {
 				<div className="w-full bg-lightGray rounded-full h-2 mt-2">
 					<div
 						className="bg-accentOrange h-2 rounded-full"
-						style={{ width: `${goalPercentage}%` }}
+						style={{
+							width: `${goalPercentage}%`,
+							maxWidth: "100%",
+						}}
 					></div>
 				</div>
 				<h4 className="text-gray-300 mt-1.5">
-					{formatMoneyINR(campaign?.raised)} raised
+					{formatMoneyINR(raised)} raised
 				</h4>
 			</div>
 		</div>
@@ -40,16 +47,16 @@ const CampaignCard = ({ campaign }) => {
 CampaignCard.propTypes = {
 	campaign: PropTypes.shape({
 		banner: PropTypes.string,
-		category: PropTypes.string,
-		created_by_name: PropTypes.string,
-		goal: PropTypes.number,
-		createdAt: PropTypes.string,
-		description: PropTypes.string,
+		category: PropTypes.string.isRequired,
+		created_by_name: PropTypes.string.isRequired,
+		goal: PropTypes.number.isRequired,
+		createdAt: PropTypes.string.isRequired,
+		description: PropTypes.string.isRequired,
 		donators: PropTypes.array,
 		raised: PropTypes.number,
-		slug: PropTypes.string,
-		title: PropTypes.string,
-		_id: PropTypes.string,
+		slug: PropTypes.string.isRequired,
+		title: PropTypes.string.isRequired,
+		_id: PropTypes.string.isRequired,
 	}),
 };
 

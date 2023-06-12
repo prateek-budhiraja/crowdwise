@@ -8,15 +8,30 @@ import { categories } from "../utils/categories";
 import formatMoneyINR from "../utils/formatMoneyINR";
 import Nav from "./Nav";
 import ShimmerCampaignPage from "./ShimmerCampaignPage";
+import DonateAmount from "./DonateAmount";
 
 const CampaignPage = () => {
 	const { campaign_slug } = useParams();
 	const { campaigns } = useContext(CampaignContext);
 	const [campaignData, setCampaignData] = useState(null);
 	const [readMore, setReadMore] = useState(false);
+	const [isModal, setIsModal] = useState(false);
+
+	const setAdditionalProperties = (campaign) => {
+		const raised = campaign?.donators.reduce(
+			(acc, donation) => acc + donation.amount_donated,
+			0
+		);
+		campaign.raised = raised;
+
+		campaign.goalPercentage = (raised / campaign.goal) * 100;
+
+		campaign.campaignAge = Math.ceil(
+			(new Date() - new Date(campaign.createdAt)) / (1000 * 60 * 60 * 24)
+		);
+	};
 
 	useEffect(() => {
-		console.log("in use effect");
 		let campaign = campaigns.find(
 			(campaign) => campaign.slug === campaign_slug
 		);
@@ -24,16 +39,17 @@ const CampaignPage = () => {
 		if (!campaign) {
 			fetchCampaign();
 		} else {
+			setAdditionalProperties(campaign);
 			setCampaignData(campaign);
 		}
 	}, [campaigns, campaign_slug]);
 
 	const fetchCampaign = async () => {
-		console.log("in fetchCampaign");
 		try {
 			const { data } = await axios.get("/api/campaigns/" + campaign_slug);
 
 			if (data?.success) {
+				setAdditionalProperties(data?.data);
 				setCampaignData(data?.data);
 			} else {
 				toast.error("Failed to load campaign!", {
@@ -46,12 +62,6 @@ const CampaignPage = () => {
 			});
 		}
 	};
-
-	const goalPercentage = (campaignData?.raised / campaignData?.goal) * 100;
-	const campaignAge = Math.ceil(
-		(new Date() - new Date(campaignData?.campaign_start_date)) /
-			(1000 * 60 * 60 * 24)
-	);
 
 	const handlePayment = async (amount) => {
 		let response;
@@ -88,6 +98,9 @@ const CampaignPage = () => {
 	return (
 		<>
 			<Nav />
+			{isModal ? (
+				<DonateAmount setIsModal={setIsModal} handlePayment={handlePayment} />
+			) : null}
 			{!campaignData ? (
 				<ShimmerCampaignPage />
 			) : (
@@ -97,7 +110,7 @@ const CampaignPage = () => {
 							Share
 						</button>
 						<button
-							onClick={() => handlePayment(1000)}
+							onClick={() => setIsModal(true)}
 							className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
 						>
 							Donate
@@ -119,11 +132,14 @@ const CampaignPage = () => {
 							<div className="w-full bg-lightGray rounded-full h-1.5 lg:h-2 mt-2 lg:hidden">
 								<div
 									className="bg-accentOrange h-1.5 lg:h-2 rounded-full"
-									style={{ width: `${goalPercentage}%` }}
+									style={{
+										width: `${campaignData?.goalPercentage}%`,
+										maxWidth: "100%",
+									}}
 								></div>
 							</div>
 							<h4 className="mt-1.5 text-lg text-gray-500 lg:hidden">{`${formatMoneyINR(
-								campaignData.raised
+								campaignData?.raised
 							)} raised of ${formatMoneyINR(campaignData?.goal)} goal`}</h4>
 							<hr className="bg-gray-300 rounded-full my-3" />
 							<div className="flex items-center gap-2 font-sm text-gray-400">
@@ -138,7 +154,7 @@ const CampaignPage = () => {
 							</div>
 							<hr className="bg-gray-300 rounded-full my-3" />
 							<div className="text-gray-300 flex items-center gap-4">
-								<h3>{campaignAge} days ago</h3>
+								<h3>{campaignData?.campaignAge} days ago</h3>
 								<div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
 								<Link to={`/c/${campaignData?.category}`}>
 									{categories[campaignData?.category]}
@@ -167,32 +183,42 @@ const CampaignPage = () => {
 									Donations
 								</h2>
 								<ul>
-									{campaignData.donators.map((donator, index) => (
-										<li key={index} className="mb-1 flex gap-6 items-center">
-											<div className="text-lg bg-lightGray px-3 py-1 rounded-full">
-												{Object.keys(donator)[0].slice(0, 1)}
-											</div>
-											<div>
-												<p>{Object.keys(donator)[0]}</p>
-												<p>{formatMoneyINR(Object.values(donator)[0])}</p>
-											</div>
-										</li>
-									))}
+									{campaignData.donators.length
+										? campaignData.donators
+												.slice(0, 8)
+												.map((donator, index) => (
+													<li
+														key={index}
+														className="mb-1 flex gap-6 items-center"
+													>
+														<div className="text-lg bg-lightGray px-3 py-1 rounded-full">
+															{donator.donator_name.slice(0, 1).toUpperCase()}
+														</div>
+														<div>
+															<p>{donator.donator_name}</p>
+															<p>{formatMoneyINR(donator.amount_donated)}</p>
+														</div>
+													</li>
+												))
+										: "Be the first to donate!"}
 								</ul>
 								<button className="mt-2 py-2 rounded-full w-full border-2 border-accentOrange hover:bg-accentOrange">
 									See all
 								</button>
 							</div>
 						</div>
-						<div className="hidden lg:block p-4 w-1/3 h-[450px] border-2 rounded-xl border-gray-300">
+						<div className="hidden lg:block p-4 w-1/3 h-[100%] border-2 rounded-xl border-gray-300">
 							<div className="w-full bg-lightGray rounded-full h-1.5 lg:h-2 mt-2">
 								<div
 									className="bg-accentOrange h-1.5 lg:h-2 rounded-full"
-									style={{ width: `${goalPercentage}%` }}
+									style={{
+										width: `${campaignData?.goalPercentage}%`,
+										maxWidth: "100%",
+									}}
 								></div>
 							</div>
 							<h4 className="mt-1.5 text-lg text-gray-500">{`${formatMoneyINR(
-								campaignData.raised
+								campaignData?.raised
 							)} raised of ${formatMoneyINR(campaignData.goal)} goal`}</h4>
 
 							<div className="flex flex-col gap-2 mt-2">
@@ -200,7 +226,7 @@ const CampaignPage = () => {
 									Share
 								</button>
 								<button
-									onClick={() => handlePayment(1000)}
+									onClick={() => setIsModal(true)}
 									className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
 								>
 									Donate
@@ -210,20 +236,22 @@ const CampaignPage = () => {
 							<div className="text-gray-300 mt-5">
 								<h2 className="text-xl font-semibold mb-2">Donations</h2>
 								<ul>
-									{campaignData?.donators?.slice(0, 5).map((donator) => (
-										<li
-											key={donator?.order_id}
-											className="mb-1 flex gap-6 items-center"
-										>
-											<div className="text-lg bg-lightGray px-3 py-1 rounded-full">
-												{Object.keys(donator)[0].slice(0, 1)}
-											</div>
-											<div>
-												<p>{Object.keys(donator)[0]}</p>
-												<p>{formatMoneyINR(Object.values(donator)[0])}</p>
-											</div>
-										</li>
-									))}
+									{campaignData?.donators.length
+										? campaignData?.donators?.slice(0, 5).map((donator) => (
+												<li
+													key={donator?.order_id}
+													className="mb-1 flex gap-6 items-center"
+												>
+													<div className="text-lg bg-lightGray px-3 py-1 rounded-full">
+														{donator.donator_name.slice(0, 1).toUpperCase()}
+													</div>
+													<div>
+														<p>{donator.donator_name}</p>
+														<p>{formatMoneyINR(donator.amount_donated)}</p>
+													</div>
+												</li>
+										  ))
+										: "Be the first to donate!"}
 								</ul>
 								<button className="mt-2 py-2 rounded-full w-full border-2 border-accentOrange hover:bg-accentOrange">
 									See all

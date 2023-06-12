@@ -6,28 +6,41 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
-function Login() {
+const Login = () => {
 	const { setUser } = useContext(UserContext);
 	const navigate = useNavigate();
 
 	const handleGoogleLogin = async (credentialResponse) => {
-		console.log("in handle google login", credentialResponse);
-		const res = await axios.post("/api/auth/login-google", {
-			credential: credentialResponse.credential,
-		});
-		if (res?.data?.success) {
-			navigate("/");
-			setUser(res.data.user);
-			toast.success("Logged in successfully");
+		try {
+			const res = await axios.post("/api/auth/login-google", {
+				credential: credentialResponse.credential,
+			});
+			if (res?.data?.success) {
+				navigate("/");
+				setUser(res.data.user);
+				toast.success("Logged in successfully");
+			} else {
+				throw new Error("Something went wrong");
+			}
+		} catch (error) {
+			toast.error("Could not login with Google");
+			toast.error(error.message);
 		}
 	};
 
 	const handleAnomymousLogin = async () => {
-		const res = await axios.post("/api/auth/login-anonymous");
-		if (res.data.success) {
-			navigate("/");
-			setUser(res.data.user);
-			toast.success("Logged in anonymously");
+		try {
+			const res = await axios.post("/api/auth/login-anonymous");
+			if (res?.data?.success) {
+				navigate("/");
+				setUser(res.data.user);
+				toast.success("Logged in anonymously");
+			} else {
+				throw new Error("Something went wrong");
+			}
+		} catch (error) {
+			toast.error("Could not login anonymously");
+			toast.error(error.message);
 		}
 	};
 
@@ -65,6 +78,6 @@ function Login() {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Login;

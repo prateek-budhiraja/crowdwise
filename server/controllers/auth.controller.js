@@ -141,3 +141,57 @@ export const createPowerUser = asyncHandler(async (req, res) => {
 		user,
 	});
 });
+
+/**************************************************
+ * @VALIDATE
+ * @REQUEST_TYPE POST
+ * @route http://localhost:<PORT>/api/auth/validate
+ * @description Validate a user's token
+ * @parameters none
+ * @returns User
+ * @middleware isLoggedIn
+ **************************************************/
+export const validate = asyncHandler(async (req, res) => {
+	let token;
+	if (
+		req.cookies?.token ||
+		(req.headers?.authorization &&
+			req.headers?.authorization.startsWith("Bearer"))
+	) {
+		token = req.cookies?.token || req.headers.authorization.split(" ")[1];
+	}
+
+	if (!token) {
+		return res.status(401).json({
+			success: false,
+			message: "Session expired. Please login again.",
+		});
+	}
+
+	try {
+		const decodedJwtPayload = await JWT.verify(token, config.JWT_SECRET);
+		if (!decodedJwtPayload) {
+			throw new Error("Bad session token");
+		}
+
+		if (decodedJwtPayload.email === "anonymous@crowdwise.com") {
+			console.log("in anonymous");
+			return logout(req, res);
+		} else {
+			let user = await User.findOne({ email: decodedJwtPayload.email });
+			let token = await user.getJwtToken();
+
+			res.cookie("token", token, options);
+
+			console.log("logged in", token);
+
+			return res.status(200).json({
+				success: true,
+				user,
+			});
+		}
+	} catch (err) {
+		console.log("193 Bad session token");
+		throw new Error("Bad session token");
+	}
+});

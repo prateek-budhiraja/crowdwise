@@ -7,6 +7,7 @@ import CampaignCard from "./CampaignCard";
 import CategoryButton from "./CategoryButton";
 import { CampaignContext } from "../context/CampaignContext";
 import { categories } from "../utils/categories";
+import ShimmerCards from "./ShimmerCards";
 
 const Home = () => {
 	const { setCampaigns } = useContext(CampaignContext);
@@ -59,11 +60,15 @@ const Home = () => {
 					Active Campaigns
 				</h1>
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 ld:gap-8 justify-items-center md:justify-items-stretch px-6 md:px-10 my-8">
-					{filteredCampaigns.map((campaign) => (
-						<Link to={`/browse/${campaign?.slug}`} key={campaign?.slug}>
-							<CampaignCard campaign={campaign} />
-						</Link>
-					))}
+					{filteredCampaigns.length === 0 ? (
+						<ShimmerCards count={6} />
+					) : (
+						filteredCampaigns.map((campaign) => (
+							<Link to={`/browse/${campaign?.slug}`} key={campaign?.slug}>
+								<CampaignCard campaign={campaign} />
+							</Link>
+						))
+					)}
 				</div>
 				<Link to="/browse">
 					<h4 className="text-gray-300 mb-10 lg:text-xl hover:text-accentOrange text-center">

@@ -1,12 +1,20 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CampaignContext } from "../context/CampaignContext";
 import CampaignCard from "./CampaignCard";
 import Nav from "./Nav";
 import ShimmerCards from "./ShimmerCards";
+import { toast } from "react-hot-toast";
 
 const Browse = () => {
 	const { campaigns } = useContext(CampaignContext);
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+		if (campaigns.length === 0) {
+			toast.error("Could not fetch campaigns, try refreshing the page!");
+		}
+	}, [campaigns]);
 
 	return (
 		<>

@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-function Nav() {
+const Nav = () => {
 	const { user, setUser } = useContext(UserContext);
 
 	const [isNavOpen, setIsNavOpen] = useState(false);
@@ -13,7 +13,7 @@ function Nav() {
 		setIsNavOpen(false);
 	});
 
-	async function handleLogout() {
+	const handleLogout = async () => {
 		const res = await axios.get("/api/auth/logout");
 		if (res.data.success) {
 			setUser(null);
@@ -21,7 +21,7 @@ function Nav() {
 		} else {
 			toast.error("Something went wrong");
 		}
-	}
+	};
 
 	return (
 		<nav className="relative bg-bgGray flex justify-between list-none py-4 lg:py-6 px-4 lg:px-10 items-center">
@@ -93,6 +93,6 @@ function Nav() {
 			</div>
 		</nav>
 	);
-}
+};
 
 export default Nav;

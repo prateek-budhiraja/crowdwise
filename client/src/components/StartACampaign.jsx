@@ -7,7 +7,7 @@ import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-function StartACampaign() {
+const StartACampaign = () => {
 	const { user } = useContext(UserContext);
 	const [data, setData] = useState({
 		title: "Campaign Title",
@@ -18,13 +18,13 @@ function StartACampaign() {
 	});
 	const [step, setStep] = useState(0);
 
-	function nextPage() {
+	const nextPage = () => {
 		setStep((prevState) => prevState + 1);
-	}
+	};
 
-	function prevPage() {
+	const prevPage = () => {
 		setStep((prevState) => prevState - 1);
-	}
+	};
 
 	if (!user) {
 		toast.error("You need to be logged in to start a campaign!");
@@ -65,12 +65,12 @@ function StartACampaign() {
 				return <Error />;
 		}
 	}
-}
+};
 
-function Initial({ nextPage, setData, data }) {
+const Initial = ({ nextPage, setData, data }) => {
 	const [campaignCategory, setCampaignCategory] = useState(data?.category);
 
-	function handleNext(e) {
+	const handleNext = (e) => {
 		e.preventDefault();
 		if (campaignCategory === "select") {
 			toast.error("Please select a category!");
@@ -80,7 +80,7 @@ function Initial({ nextPage, setData, data }) {
 		setData((prevState) => ({ ...prevState, category: campaignCategory }));
 		nextPage();
 		toast.success("Category selected successfully!");
-	}
+	};
 
 	return (
 		<form className="max-w-[400px] mx-auto mt-20">
@@ -109,13 +109,13 @@ function Initial({ nextPage, setData, data }) {
 			</button>
 		</form>
 	);
-}
+};
 
-function GetTextInformation({ nextPage, prevPage, setData, data }) {
+const GetTextInformation = ({ nextPage, prevPage, setData, data }) => {
 	const [title, setTitle] = useState(data?.title);
 	const [description, setDescription] = useState(data?.description);
 
-	function handleNext(e) {
+	const handleNext = (e) => {
 		e.preventDefault();
 
 		if (title === "" || description === "" || title === "Campaign Title") {
@@ -131,7 +131,7 @@ function GetTextInformation({ nextPage, prevPage, setData, data }) {
 		setData((prevState) => ({ ...prevState, title, description }));
 		nextPage();
 		toast.success("Information saved successfully!");
-	}
+	};
 
 	return (
 		<form className="max-w-[400px] mx-auto mt-20">
@@ -184,19 +184,19 @@ function GetTextInformation({ nextPage, prevPage, setData, data }) {
 			</div>
 		</form>
 	);
-}
+};
 
-function SetMoreInfo({ nextPage, prevPage, setData, data }) {
+const SetMoreInfo = ({ nextPage, prevPage, setData, data }) => {
 	const [goal, setGoal] = useState(data?.goal);
 	const [banner, setBanner] = useState(data?.banner);
 
-	function handlePrev(e) {
+	const handlePrev = (e) => {
 		e.preventDefault();
 		if (goal <= 0) setData((prevState) => ({ ...prevState, goal, banner }));
 		prevPage();
-	}
+	};
 
-	function handleFinish(e) {
+	const handleFinish = (e) => {
 		e.preventDefault();
 
 		if (goal <= 0) {
@@ -206,7 +206,7 @@ function SetMoreInfo({ nextPage, prevPage, setData, data }) {
 
 		setData((prevState) => ({ ...prevState, goal, banner }));
 		nextPage();
-	}
+	};
 
 	return (
 		<form className="max-w-[400px] mx-auto mt-20">
@@ -257,22 +257,22 @@ function SetMoreInfo({ nextPage, prevPage, setData, data }) {
 			</div>
 		</form>
 	);
-}
+};
 
-function Submit({ data }) {
+const Submit = ({ data }) => {
 	useEffect(() => {
 		createCampaign();
 	}, []);
 
-	async function createCampaign() {
+	const createCampaign = async () => {
 		const res = await axios.post("/api/campaigns", data);
 		console.log(res);
-	}
+	};
 
 	return <h1>Loading...</h1>;
-}
+};
 
-function LoginMessage({ verify }) {
+const LoginMessage = ({ verify }) => {
 	const navigate = useNavigate();
 	return (
 		<div className="flex justify-center items-center h-screen">
@@ -291,7 +291,7 @@ function LoginMessage({ verify }) {
 			</div>
 		</div>
 	);
-}
+};
 
 // PropTypes
 Initial.propTypes = {

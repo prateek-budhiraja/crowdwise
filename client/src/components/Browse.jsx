@@ -13,6 +13,8 @@ const Browse = () => {
 	const { campaigns, setCampaigns } = useContext(CampaignContext);
 	const [filteredText, setFilteredText] = useState("");
 	const [filteredCampaigns, setFilteredCampaigns] = useState([]); // [1
+	const [sortDate, setSortDate] = useState("newest");
+	const [sortAmount, setSortAmount] = useState("mostFunded");
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -48,6 +50,32 @@ const Browse = () => {
 		setFilteredCampaigns(filteredCampaigns);
 	};
 
+	const handleSort = (e) => {
+		const sortedCampaigns = [...filteredCampaigns];
+		if (e.target.value === "newest") {
+			setSortDate("newest");
+			sortedCampaigns.sort((a, b) => {
+				return new Date(b.createdAt) - new Date(a.createdAt);
+			});
+		} else if (e.target.value === "oldest") {
+			setSortDate("oldest");
+			sortedCampaigns.sort((a, b) => {
+				return new Date(a.createdAt) - new Date(b.createdAt);
+			});
+		} else if (e.target.value === "mostFunded") {
+			setSortAmount("mostFunded");
+			sortedCampaigns.sort((a, b) => {
+				return b.donators.length - a.donators.length;
+			});
+		} else if (e.target.value === "leastFunded") {
+			setSortAmount("leastFunded");
+			sortedCampaigns.sort((a, b) => {
+				return a.donators.length - b.donators.length;
+			});
+		}
+		setFilteredCampaigns(sortedCampaigns);
+	};
+
 	return (
 		<>
 			<Nav />
@@ -78,14 +106,33 @@ const Browse = () => {
 					</button>
 				</form>
 				<div className="flex gap-2 shrink-0">
-					<button className="bg-accentOrange rounded-full text-gray-300 font-medium px-3 py-1.5 md:p-2.5">
+					<button
+						onClick={() =>
+							handleSort({
+								target: {
+									value: sortDate === "newest" ? "oldest" : "newest",
+								},
+							})
+						}
+						className="bg-accentOrange rounded-full text-gray-300 font-medium px-3 py-1.5 md:p-2.5"
+					>
 						<img
 							src="/assets/calendar1.svg"
 							className="w-[20px] md:w-[25px]"
 							alt=""
 						/>
 					</button>
-					<button className="bg-accentOrange rounded-full text-gray-300 font-medium px-3 py-1.5 md:p-2.5">
+					<button
+						onClick={() =>
+							handleSort({
+								target: {
+									value:
+										sortAmount === "mostFunded" ? "leastFunded" : "mostFunded",
+								},
+							})
+						}
+						className="bg-accentOrange rounded-full text-gray-300 font-medium px-3 py-1.5 md:p-2.5"
+					>
 						<img
 							src="/assets/money1.svg"
 							className="w-[20px] md:w-[25px]"

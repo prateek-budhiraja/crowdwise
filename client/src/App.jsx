@@ -11,6 +11,8 @@ import { UserContext } from "./context/UserContext";
 import { CampaignContext } from "./context/CampaignContext";
 import { useEffect, useMemo, useState } from "react";
 import Browse from "./components/Browse";
+import PaymentSuccessful from "./components/PaymentSuccessful";
+import CampaignSuccessful from "./components/CampaignSuccessful";
 
 axios.defaults.baseURL = config.SERVER_URL;
 axios.defaults.withCredentials = true;
@@ -51,6 +53,11 @@ function App() {
 								<Route path="/login" element={<Login />} />
 								<Route path="/start-a-campaign" element={<StartACampaign />} />
 								<Route path="/browse" element={<Browse />} />
+								<Route path="/paymentsuccess" element={<PaymentSuccessful />} />
+								<Route
+									path="/start-a-campaign/sucess"
+									element={<CampaignSuccessful />}
+								/>
 								<Route path="/c/:category" element={<CategoryPage />} />
 								<Route
 									path="/browse/:campaign_slug"

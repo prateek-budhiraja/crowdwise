@@ -8,7 +8,7 @@ const PaymentSuccessful = () => {
 		<>
 			<Nav />
 			<div className="h-[80vh] flex justify-center items-center">
-				<div className="text-center text-gray-300">
+				<div className="p-4 text-center text-gray-300">
 					<h1 className="text-2xl md:text-4xl mb-10 font-semibold">
 						Thankyou for you generous donation!
 					</h1>

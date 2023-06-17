@@ -6,7 +6,6 @@ Crowdwise is a crowdfunding platform that allows users to create campaign and ra
 
 ## Tasks
 
-- f: Payment successful page
 - f: Category pages
 - b: Email when payment is successful
 - f: Only show approaved campaigns in browse

@@ -32,6 +32,7 @@ const CampaignPage = () => {
 	};
 
 	useEffect(() => {
+		window.scrollTo(0, 0);
 		let campaign = campaigns.find(
 			(campaign) => campaign.slug === campaign_slug
 		);

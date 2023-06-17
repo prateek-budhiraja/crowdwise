@@ -100,9 +100,19 @@ const Browse = () => {
 					/>
 					<button
 						type="submit"
-						className="bg-accentOrange rounded-lg text-gray-300 font-medium px-3 py-1.5 md:p-2.5"
+						className="hidden md:inline bg-accentOrange rounded-lg text-gray-300 font-medium px-3 py-1.5 md:p-2.5"
 					>
 						Search
+					</button>
+					<button
+						type="submit"
+						className="bg-accentOrange rounded-lg text-gray-300 font-medium px-3 py-1.5 md:p-2.5"
+					>
+						<img
+							src="/assets/search.svg"
+							className="w-[20px] md:w-[25px]"
+							alt=""
+						/>
 					</button>
 				</form>
 				<div className="flex gap-2 shrink-0">
@@ -114,7 +124,7 @@ const Browse = () => {
 								},
 							})
 						}
-						className="bg-accentOrange rounded-full text-gray-300 font-medium px-3 py-1.5 md:p-2.5"
+						className="bg-accentOrange rounded-full text-gray-300 font-medium px-2 py-1 md:p-2.5"
 					>
 						<img
 							src="/assets/calendar1.svg"
@@ -131,7 +141,7 @@ const Browse = () => {
 								},
 							})
 						}
-						className="bg-accentOrange rounded-full text-gray-300 font-medium px-3 py-1.5 md:p-2.5"
+						className="bg-accentOrange rounded-full text-gray-300 font-medium px-2 py-1.5 md:p-2.5"
 					>
 						<img
 							src="/assets/money1.svg"

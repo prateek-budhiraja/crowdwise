@@ -10,7 +10,7 @@ const CampaignCard = ({ campaign }) => {
 	const goalPercentage = (raised / campaign?.goal) * 100;
 
 	return (
-		<div className="rounded-lg border-2 border-gray-300 w-[400px] md:w-[100%] max-w-[500px] hover:scale-105 ease-in duration-200">
+		<div className="rounded-lg border-2 border-gray-300 w-[300px] md:w-[100%] max-w-[500px] hover:scale-105 ease-in duration-200">
 			<img
 				className="h-[220px] rounded-lg w-full object-cover"
 				src={campaign?.banner || `/categoryImages/${campaign?.category}.jpg`}

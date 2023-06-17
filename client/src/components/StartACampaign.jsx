@@ -29,7 +29,6 @@ const StartACampaign = () => {
 
 	if (!user) {
 		toast.error("You need to be logged in to start a campaign!");
-
 		return <ValidationError login />;
 	} else if (user?.role !== "POWER") {
 		if (user.email === "anonymous@crowdwise.com") {

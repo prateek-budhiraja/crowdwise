@@ -30,7 +30,7 @@ const ValidationError = ({
 
 ValidationError.propTypes = {
 	login: PropTypes.bool,
-	message: PropTypes.string.isRequired,
+	message: PropTypes.string,
 };
 
 export default ValidationError;

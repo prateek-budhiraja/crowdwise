@@ -36,7 +36,7 @@ const CampaignCard = ({ campaign }) => {
 					></div>
 				</div>
 				<h4 className="text-gray-300 mt-1.5">
-					{formatMoneyINR(raised)} raised
+					{formatMoneyINR(raised)} raised of {formatMoneyINR(campaign?.goal)}
 				</h4>
 			</div>
 		</div>

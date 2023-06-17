@@ -20,7 +20,7 @@ const CampaignCard = ({ campaign }) => {
 				<div className="flex justify-end">
 					<CategoryButton xs category={campaign?.category} />
 				</div>
-				<h3 className="text-lg font-medium text-gray-300 mt-2 leading-none">
+				<h3 className="truncate text-lg font-medium text-gray-300 mt-2 leading-none">
 					{campaign?.title}
 				</h3>
 				<h4 className="text-gray-600 mt-1 text-xs">

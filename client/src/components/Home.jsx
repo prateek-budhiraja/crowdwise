@@ -71,9 +71,9 @@ const Home = () => {
 					)}
 				</div>
 				<Link to="/browse">
-					<h4 className="text-gray-300 mb-10 lg:text-xl hover:text-accentOrange text-center">
+					<button className="mx-auto block mb-8 lg:mt-10 lg:text-xl py-2 px-4 lg:px-6 rounded-full bg-lightGray font-medium text-accentOrange hover:bg-accentOrange hover:text-lightGray">
 						Browse More
-					</h4>
+					</button>
 				</Link>
 			</div>
 		</>

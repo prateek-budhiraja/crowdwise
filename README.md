@@ -6,15 +6,11 @@ Crowdwise is a crowdfunding platform that allows users to create campaign and ra
 
 ## Tasks
 
-- f: Category pages
-- b: Email when payment is successful
+- f: share campaign option
 - f: Only show approaved campaigns in browse
 - f: See all donations on campaign page
 - f: User profile page
-- f: Request for becoming power user
+- f: verification page
 - f: Admin page
+- b: Email when payment is successful
 - b: Admin routes and controllers
-- f: Campaign card - truncate long name
-- b: login-anonymous - keep them logged in
-- f: share campaign option
-  f: Start campaign - handle errors nicely

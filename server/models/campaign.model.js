@@ -17,14 +17,14 @@ const campaignSchema = mongoose.Schema(
 			type: Number,
 			required: [true, "Goal amount is required!"],
 		},
+		raised: {
+			type: Number,
+			default: 0,
+		},
 		category: {
 			type: String,
 			enum: Object.values(categories),
 			required: [true, "Campaign category is required!"],
-		},
-		raised: {
-			type: Number,
-			default: 0,
 		},
 		created_by: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -75,8 +75,23 @@ const campaignSchema = mongoose.Schema(
 				},
 			},
 		],
+		verified: {
+			type: Boolean,
+			default: false,
+		},
+		open: {
+			type: Boolean,
+			default: true,
+		},
 	},
 	{ timestamps: true }
 );
+
+campaignSchema.pre("save", function (next) {
+	if (raised > goal) {
+		this.open = false;
+	}
+	next();
+});
 
 export default mongoose.model("Campaign", campaignSchema);

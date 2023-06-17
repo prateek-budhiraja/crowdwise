@@ -173,12 +173,11 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 		throw new Error("No campaign found");
 	}
 
-	console.log(campaign.donators);
-
 	let amount_donated = 0;
 	campaign?.donators.forEach((donation) => {
 		if (donation.order_id === razorpay_order_id) {
 			amount_donated = donation.amount_donated;
+			campaign.raised += amount_donated;
 			donation.verified = true;
 			donation.payment_id = razorpay_payment_id;
 		}
@@ -203,4 +202,29 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 	res.redirect(
 		`${config.CLIENT_URL}/paymentsuccess?reference=${razorpay_payment_id}`
 	);
+});
+
+/**************************************************
+ * @VERIFY_CAMPAIGN
+ * @REQUEST_TYPE PUT
+ * @route http://localhost:<PORT>/api/campaigns/:slug/verify
+ * @description Verify campaign
+ * @parameters
+ * @returns
+ * ***************************************************/
+export const verifyCampaign = asyncHandler(async (req, res) => {
+	const { slug } = req.params;
+
+	const campaign = await Campaign.findOne({ slug });
+	if (!campaign) {
+		throw new Error("No campaign found");
+	}
+
+	campaign.verified = true;
+	await campaign.save();
+
+	res.status(200).json({
+		success: true,
+		data: campaign,
+	});
 });

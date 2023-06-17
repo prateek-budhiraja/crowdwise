@@ -175,15 +175,12 @@ export const validate = asyncHandler(async (req, res) => {
 		}
 
 		if (decodedJwtPayload.email === "anonymous@crowdwise.com") {
-			console.log("in anonymous");
-			return logout(req, res);
+			return loginAnonymous(req, res);
 		} else {
 			let user = await User.findOne({ email: decodedJwtPayload.email });
 			let token = await user.getJwtToken();
 
 			res.cookie("token", token, options);
-
-			console.log("logged in", token);
 
 			return res.status(200).json({
 				success: true,
@@ -191,7 +188,6 @@ export const validate = asyncHandler(async (req, res) => {
 			});
 		}
 	} catch (err) {
-		console.log("193 Bad session token");
 		throw new Error("Bad session token");
 	}
 });

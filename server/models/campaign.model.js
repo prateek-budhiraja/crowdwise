@@ -88,7 +88,7 @@ const campaignSchema = mongoose.Schema(
 );
 
 campaignSchema.pre("save", function (next) {
-	if (raised > goal) {
+	if (this.raised > this.goal) {
 		this.open = false;
 	}
 	next();

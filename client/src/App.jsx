@@ -35,7 +35,7 @@ function App() {
 					setUser(data?.user);
 				}
 			} catch (error) {
-				console.log("Failed to fetch user!");
+				console.log("Not Logged in!");
 			}
 		};
 

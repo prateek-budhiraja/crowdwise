@@ -20,49 +20,45 @@ const CampaignPage = () => {
 	const [isSeeAllDonationModal, setIsSeeAllDonationModal] = useState(false);
 
 	const setAdditionalProperties = (campaign) => {
-		const raised = campaign?.donators.reduce(
-			(acc, donation) => acc + donation.amount_donated,
-			0
-		);
-		campaign.raised = raised;
-
-		campaign.goalPercentage = (raised / campaign.goal) * 100;
+		campaign.goalPercentage = (campaign.raised / campaign.goal) * 100;
 
 		campaign.campaignAge = Math.ceil(
 			(new Date() - new Date(campaign.createdAt)) / (1000 * 60 * 60 * 24)
 		);
+		return campaign;
 	};
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		let campaign = campaigns.find(
-			(campaign) => campaign.slug === campaign_slug
-		);
+		const getCampaignData = async () => {
+			let campaign = campaigns.find(
+				(campaign) => campaign.slug === campaign_slug
+			);
 
-		if (!campaign) {
-			fetchCampaign();
-		} else {
-			setAdditionalProperties(campaign);
-			setCampaignData(campaign);
-		}
+			if (!campaign) {
+				try {
+					campaign = await fetchCampaign();
+				} catch (error) {
+					toast.error("Failed to load campaign!", {
+						duration: 10000,
+					});
+					return;
+				}
+			}
+
+			setCampaignData(setAdditionalProperties(campaign));
+		};
+		getCampaignData();
 	}, [campaigns, campaign_slug]);
 
 	const fetchCampaign = async () => {
-		try {
-			const { data } = await axios.get("/api/campaigns/" + campaign_slug);
+		const { data } = await axios.get("/api/campaigns/" + campaign_slug);
 
-			if (data?.success) {
-				setAdditionalProperties(data?.data);
-				setCampaignData(data?.data);
-			} else {
-				toast.error("Failed to load campaign!", {
-					duration: 10000,
-				});
-			}
-		} catch (error) {
-			toast.error("Failed to load campaign!", {
-				duration: 10000,
-			});
+		if (data?.success) {
+			const campaign = data?.data;
+			return campaign;
+		} else {
+			throw new Error();
 		}
 	};
 

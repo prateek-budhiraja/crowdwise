@@ -26,7 +26,7 @@ const Home = () => {
 				const filteredCampaigns = data?.data?.slice(0, 8);
 				setFilteredCampaigns(filteredCampaigns);
 			} else {
-				toast.error("Failed to load campaigns!");
+				throw new Error();
 			}
 		} catch (error) {
 			toast.error("Failed to load campaigns!", {

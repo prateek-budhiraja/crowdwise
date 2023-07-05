@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { UserContext } from "../context/UserContext";
+import { toast } from "react-hot-toast";
 
 const DonateAmount = ({ handlePayment, setIsDonationModal }) => {
+	const { user } = useContext(UserContext);
 	const [amount, setAmount] = useState(0);
+
 	const handleSubmit = () => {
 		setIsDonationModal(false);
 		handlePayment(amount);
 	};
+
+	if (!user) {
+		setIsDonationModal(false);
+		toast.error("Please login to donate!");
+	}
 
 	return (
 		<div

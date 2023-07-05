@@ -1,10 +1,10 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-const DonateAmount = ({ handlePayment, setIsModal }) => {
+const DonateAmount = ({ handlePayment, setIsDonationModal }) => {
 	const [amount, setAmount] = useState(0);
 	const handleSubmit = () => {
-		setIsModal(false);
+		setIsDonationModal(false);
 		handlePayment(amount);
 	};
 
@@ -34,7 +34,7 @@ const DonateAmount = ({ handlePayment, setIsModal }) => {
 							Proceed
 						</button>
 						<button
-							onClick={() => setIsModal(false)}
+							onClick={() => setIsDonationModal(false)}
 							className="text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900"
 						>
 							No, cancel
@@ -49,7 +49,7 @@ const DonateAmount = ({ handlePayment, setIsModal }) => {
 // PropTypes
 DonateAmount.propTypes = {
 	handlePayment: PropTypes.func.isRequired,
-	setIsModal: PropTypes.func.isRequired,
+	setIsDonationModal: PropTypes.func.isRequired,
 };
 
 export default DonateAmount;

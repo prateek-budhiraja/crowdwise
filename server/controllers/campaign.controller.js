@@ -19,6 +19,12 @@ export const getCampaigns = asyncHandler(async (_req, res) => {
 		throw new Error("No campaigns found!");
 	}
 
+	campaigns.forEach((campaign) => {
+		campaign.donators = campaign.donators.filter(
+			(donation) => donation.verified
+		);
+	});
+
 	res.status(200).json({
 		success: true,
 		data: campaigns,
@@ -38,6 +44,8 @@ export const getCampaign = asyncHandler(async (req, res) => {
 	if (!campaign) {
 		throw new Error("No campaign found!");
 	}
+
+	campaign.donators = campaign.donators.filter((donation) => donation.verified);
 
 	res.status(200).json({
 		success: true,

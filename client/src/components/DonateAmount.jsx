@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { UserContext } from "../context/UserContext";
 import { toast } from "react-hot-toast";

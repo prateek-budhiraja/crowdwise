@@ -3,11 +3,7 @@ import formatMoneyINR from "../utils/formatMoneyINR";
 import CategoryButton from "./CategoryButton";
 
 const CampaignCard = ({ campaign }) => {
-	const raised = campaign?.donators.reduce(
-		(acc, donation) => acc + donation.amount_donated,
-		0
-	);
-	const goalPercentage = (raised / campaign?.goal) * 100;
+	const goalPercentage = (campaign?.raised / campaign?.goal) * 100;
 
 	return (
 		<div className="rounded-lg border-2 border-gray-300 w-[300px] md:w-[100%] max-w-[500px] hover:scale-105 ease-in duration-200">
@@ -36,7 +32,8 @@ const CampaignCard = ({ campaign }) => {
 					></div>
 				</div>
 				<h4 className="text-gray-300 mt-1.5">
-					{formatMoneyINR(raised)} raised of {formatMoneyINR(campaign?.goal)}
+					{formatMoneyINR(campaign?.raised)} raised of{" "}
+					{formatMoneyINR(campaign?.goal)}
 				</h4>
 			</div>
 		</div>

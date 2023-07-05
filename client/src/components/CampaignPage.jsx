@@ -9,13 +9,15 @@ import formatMoneyINR from "../utils/formatMoneyINR";
 import Nav from "./Nav";
 import ShimmerCampaignPage from "./ShimmerCampaignPage";
 import DonateAmount from "./DonateAmount";
+import SeeAllDonationModal from "./SeeAllDonationModal";
 
 const CampaignPage = () => {
 	const { campaign_slug } = useParams();
 	const { campaigns } = useContext(CampaignContext);
 	const [campaignData, setCampaignData] = useState(null);
 	const [readMore, setReadMore] = useState(false);
-	const [isModal, setIsModal] = useState(false);
+	const [isDonationModal, setIsDonationModal] = useState(false);
+	const [isSeeAllDonationModal, setIsSeeAllDonationModal] = useState(false);
 
 	const setAdditionalProperties = (campaign) => {
 		const raised = campaign?.donators.reduce(
@@ -99,8 +101,17 @@ const CampaignPage = () => {
 	return (
 		<>
 			<Nav />
-			{isModal ? (
-				<DonateAmount setIsModal={setIsModal} handlePayment={handlePayment} />
+			{isDonationModal ? (
+				<DonateAmount
+					setIsDonationModal={setIsDonationModal}
+					handlePayment={handlePayment}
+				/>
+			) : null}
+			{isSeeAllDonationModal ? (
+				<SeeAllDonationModal
+					setIsSeeAllDonationModal={setIsSeeAllDonationModal}
+					donations={campaignData?.donators}
+				/>
 			) : null}
 			{!campaignData ? (
 				<ShimmerCampaignPage />
@@ -111,7 +122,7 @@ const CampaignPage = () => {
 							Share
 						</button>
 						<button
-							onClick={() => setIsModal(true)}
+							onClick={() => setIsDonationModal(true)}
 							className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
 						>
 							Donate
@@ -203,7 +214,10 @@ const CampaignPage = () => {
 												))
 										: "Be the first to donate!"}
 								</ul>
-								<button className="mt-2 py-2 rounded-full w-full border-2 border-accentOrange hover:bg-accentOrange">
+								<button
+									onClick={() => setIsSeeAllDonationModal(true)}
+									className="mt-2 py-2 rounded-full w-full border-2 border-accentOrange hover:bg-accentOrange"
+								>
 									See all
 								</button>
 							</div>
@@ -227,7 +241,7 @@ const CampaignPage = () => {
 									Share
 								</button>
 								<button
-									onClick={() => setIsModal(true)}
+									onClick={() => setIsDonationModal(true)}
 									className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
 								>
 									Donate
@@ -254,7 +268,10 @@ const CampaignPage = () => {
 										  ))
 										: "Be the first to donate!"}
 								</ul>
-								<button className="mt-2 py-2 rounded-full w-full border-2 border-accentOrange hover:bg-accentOrange">
+								<button
+									onClick={() => setIsSeeAllDonationModal(true)}
+									className="mt-2 py-2 rounded-full w-full border-2 border-accentOrange hover:bg-accentOrange"
+								>
 									See all
 								</button>
 							</div>

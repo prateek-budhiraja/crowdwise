@@ -47,13 +47,40 @@ const Nav = () => {
 					</button>
 				</Link>
 			) : (
-				<button
-					onClick={handleLogout}
-					className="hidden lg:inline-block py-1.5 px-5 bg-gray-300 font-medium text-accentOrange rounded-full hover:bg-accentOrange hover:text-gray-300"
-				>
-					Logout
-				</button>
+				<div ref={ref} className="hidden lg:inline-block">
+					<div
+						onClick={() => setIsNavOpen((prevState) => !prevState)}
+						className="space-y-1 cursor-pointer flex gap-2 items-start border-2 p-1 pr-2 border-gray-300 rounded-full text-gray-300"
+					>
+						<img
+							src={user.profile_picture || "/assets/profile.jpg"}
+							alt="profile"
+							className="w-[30px] h-[30px] rounded-full"
+						/>
+						<button className="hover:text-accentOrange">
+							{user.name.split(" ")[0]}
+						</button>
+					</div>
+					{isNavOpen ? (
+						<>
+							<div className="w-[180px] p-4 absolute bg-lightGray flex gap-1 flex-col right-4 -bottom-[80px] text-gray-400 text-lg">
+								<Link to="/profile">
+									<span>Profile</span>
+								</Link>
+								<span
+									onClick={handleLogout}
+									className="cursor-pointer text-accentOrange"
+								>
+									Logout
+								</span>
+							</div>
+						</>
+					) : (
+						""
+					)}
+				</div>
 			)}
+			{/* mobile hamburger */}
 			<div ref={ref} className="lg:hidden">
 				<div
 					onClick={() => setIsNavOpen((prevState) => !prevState)}
@@ -78,12 +105,17 @@ const Nav = () => {
 									<span className="text-accentOrange">Login</span>
 								</Link>
 							) : (
-								<span
-									onClick={handleLogout}
-									className="cursor-pointer text-accentOrange"
-								>
-									Logout
-								</span>
+								<>
+									<Link to="/profile">
+										<span>Profile</span>
+									</Link>
+									<span
+										onClick={handleLogout}
+										className="cursor-pointer text-accentOrange"
+									>
+										Logout
+									</span>
+								</>
 							)}
 						</div>
 					</>

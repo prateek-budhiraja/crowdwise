@@ -57,21 +57,25 @@ const Browse = () => {
 			sortedCampaigns.sort((a, b) => {
 				return new Date(b.createdAt) - new Date(a.createdAt);
 			});
+			toast.success("Sorted by newest");
 		} else if (e.target.value === "oldest") {
 			setSortDate("oldest");
 			sortedCampaigns.sort((a, b) => {
 				return new Date(a.createdAt) - new Date(b.createdAt);
 			});
+			toast.success("Sorted by oldest");
 		} else if (e.target.value === "mostFunded") {
 			setSortAmount("mostFunded");
 			sortedCampaigns.sort((a, b) => {
-				return b.donators.length - a.donators.length;
+				return b.raised - a.raised;
 			});
+			toast.success("Sorted by most funded");
 		} else if (e.target.value === "leastFunded") {
 			setSortAmount("leastFunded");
 			sortedCampaigns.sort((a, b) => {
-				return a.donators.length - b.donators.length;
+				return a.raised - b.raised;
 			});
+			toast.success("Sorted by least funded");
 		}
 		setFilteredCampaigns(sortedCampaigns);
 	};

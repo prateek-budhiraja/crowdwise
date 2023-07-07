@@ -85,8 +85,8 @@ const Initial = ({ nextPage, setData, data }) => {
 	};
 
 	return (
-		<form className="max-w-[400px] mx-auto mt-20">
-			<h1 className="text-3xl font-bold text-accentOrange mb-5">
+		<form className="max-w-[400px] mx-auto mt-20 p-4">
+			<h1 className="text-2xl lg:text-3xl font-bold text-accentOrange mb-5">
 				Select a Campaign category
 			</h1>
 			<select
@@ -105,7 +105,7 @@ const Initial = ({ nextPage, setData, data }) => {
 			</select>
 			<button
 				onClick={handleNext}
-				className="w-full mt-5 py-2 text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
+				className="w-full mt-5 py-2 lg:text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
 			>
 				Next
 			</button>
@@ -136,12 +136,12 @@ const GetTextInformation = ({ nextPage, prevPage, setData, data }) => {
 	};
 
 	return (
-		<form className="max-w-[400px] mx-auto mt-20">
-			<h1 className="text-3xl font-bold text-accentOrange mb-5">
+		<form className="max-w-[400px] mx-auto mt-20 p-4">
+			<h1 className="text-2xl lg:text-3xl font-bold text-accentOrange mb-5">
 				Fill in the below information
 			</h1>
 			<label
-				className="font-medium block mb-1 text-lg text-gray-300 mt-5"
+				className="font-medium block mb-1 lg:text-lg text-gray-300 mt-5"
 				htmlFor="title"
 			>
 				Campaign Title
@@ -157,7 +157,7 @@ const GetTextInformation = ({ nextPage, prevPage, setData, data }) => {
 			/>
 			<label
 				htmlFor="message"
-				className="font-medium block mb-1 text-lg text-gray-300 mt-5"
+				className="font-medium block mb-1 lg:text-lg text-gray-300 mt-5"
 			>
 				Description of your campaign
 			</label>
@@ -173,13 +173,13 @@ const GetTextInformation = ({ nextPage, prevPage, setData, data }) => {
 			<div className="flex mt-5 gap-2">
 				<button
 					onClick={prevPage}
-					className="w-1/2 py-2 text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
+					className="w-1/2 py-2 lg:text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
 				>
 					Prev
 				</button>
 				<button
 					onClick={handleNext}
-					className="w-1/2 py-2 text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
+					className="w-1/2 py-2 lg:text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
 				>
 					Next
 				</button>
@@ -211,8 +211,8 @@ const SetMoreInfo = ({ nextPage, prevPage, setData, data }) => {
 	};
 
 	return (
-		<form className="max-w-[400px] mx-auto mt-20">
-			<h1 className="text-3xl font-bold text-accentOrange mb-5">
+		<form className="max-w-[400px] mx-auto mt-20 px-4">
+			<h1 className="text-2xl lg:text-3xl font-bold text-accentOrange mb-5">
 				Submit some more Information
 			</h1>
 			<label
@@ -246,13 +246,13 @@ const SetMoreInfo = ({ nextPage, prevPage, setData, data }) => {
 			<div className="flex mt-5 gap-2">
 				<button
 					onClick={handlePrev}
-					className="w-1/2 py-2 text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
+					className="w-1/2 py-2 lg:text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
 				>
 					Prev
 				</button>
 				<button
 					onClick={handleFinish}
-					className="w-1/2 py-2 text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
+					className="w-1/2 py-2 lg:text-lg bg-accentOrange rounded-full text-gray-300 font-medium"
 				>
 					Finish
 				</button>

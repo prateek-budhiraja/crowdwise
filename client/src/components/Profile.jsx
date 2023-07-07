@@ -1,30 +1,33 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import Nav from "./Nav";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import ValidationError from "./ValidationError";
 
 const Profile = () => {
 	const { user } = useContext(UserContext);
-	const navigate = useNavigate();
 	const [totalAmountDonated, setTotalAmountDonated] = useState(0);
+
 	useEffect(() => {
-		console.log(user);
-		console.log(!user || user.email === "anonymous@crowdwise.com");
-		if (!user || user.email === "anonymous@crowdwise.com") {
-			toast.error("Please login with Google account to view your profile");
-			navigate("/login");
-		} else {
-			console.log("in else");
+		if (user && user.email !== "anonymous@crowdwise.com") {
 			let total = 0;
 			user.donations.forEach((donation) => {
 				total += donation.amount_donated;
 			});
 			setTotalAmountDonated(total);
 		}
-	}, []);
+	}, [user]);
 
-	console.log("outside", user);
+	if (!user || user.email === "anonymous@crowdwise.com") {
+		toast.error("Please login with Google account to view your profile");
+		return (
+			<ValidationError
+				login
+				message="You need to login with your Google account to view profile"
+			/>
+		);
+	}
 
 	return (
 		<>
@@ -53,7 +56,6 @@ const Profile = () => {
 						))}
 					</ul>
 					<hr className="mt-2" />
-					{/* total amount donated */}
 					<div className="flex justify-between lg:text-lg lg:font-medium gap-[40px] text-accentOrange mt-2">
 						<h3>Total Amount Donated</h3>
 						<h3>₹{totalAmountDonated}</h3>

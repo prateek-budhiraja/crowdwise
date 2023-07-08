@@ -114,7 +114,12 @@ const CampaignPage = () => {
 			) : (
 				<>
 					<div className="bg-[#181818] fixed bottom-0 grid grid-cols-3 w-full gap-4 px-4 py-4 border-t-2 border-gray-600 lg:hidden">
-						<button className="col-span-1 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300">
+						<button
+							onClick={() => {
+								navigator.clipboard.writeText("Hello");
+							}}
+							className="col-span-1 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
+						>
 							Share
 						</button>
 						<button
@@ -233,7 +238,15 @@ const CampaignPage = () => {
 							)} raised of ${formatMoneyINR(campaignData.goal)} goal`}</h4>
 
 							<div className="flex flex-col gap-2 mt-2">
-								<button className="col-span-1 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300">
+								<button
+									onClick={() => {
+										navigator.clipboard.writeText(
+											`Please donate to "${campaignData?.title}" campaign at ${window.location.href}`
+										);
+										toast.success("Link copied to clipboard successfully!");
+									}}
+									className="col-span-1 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
+								>
 									Share
 								</button>
 								<button

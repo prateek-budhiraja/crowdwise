@@ -50,7 +50,20 @@ export const isPowerUser = asyncHandler(async (req, _res, next) => {
 		throw new Error("Not logged in");
 	}
 
-	if (req?.user?.role === "POWER") {
+	if (req?.user?.role === "POWER" || req?.user?.role === "ADMIN") {
+		next();
+	} else {
+		throw new Error("Not authorized to access this route");
+	}
+});
+
+// check if user is an admin, if they are already logged in!
+export const isAdmin = asyncHandler(async (req, _res, next) => {
+	if (!req?.user) {
+		throw new Error("Not logged in");
+	}
+
+	if (req?.user?.role === "ADMIN") {
 		next();
 	} else {
 		throw new Error("Not authorized to access this route");

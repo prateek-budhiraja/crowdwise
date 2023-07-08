@@ -215,7 +215,7 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 /**************************************************
  * @VERIFY_CAMPAIGN
  * @REQUEST_TYPE PUT
- * @route http://localhost:<PORT>/api/campaigns/:slug/verify
+ * @route http://localhost:<PORT>/api/admin/campaigns/:slug/verify
  * @description Verify campaign
  * @parameters
  * @returns
@@ -234,5 +234,53 @@ export const verifyCampaign = asyncHandler(async (req, res) => {
 	res.status(200).json({
 		success: true,
 		data: campaign,
+	});
+});
+
+/**************************************************
+ * @REJECT_CAMPAIGN
+ * @REQUEST_TYPE DELETE
+ * @route http://localhost:<PORT>/api/admin/campaigns/:slug/reject
+ * @description Reject campaign
+ * @returns message
+ * ***************************************************/
+export const rejectCampaign = asyncHandler(async (req, res) => {
+	const { slug } = req.params;
+	const { message } = req.body;
+
+	const campaign = await Campaign.findOne({ slug });
+	if (!campaign) {
+		throw new Error("No campaign found");
+	}
+
+	await campaign.remove();
+
+	res.status(200).json({
+		success: true,
+		message: message,
+	});
+});
+
+/**************************************************
+ * @SET_INACTIVE
+ * @REQUEST_TYPE PUT
+ * @route http://localhost:<PORT>/api/admin/campaigns/:slug/inactive
+ * @description Set campaign inactive
+ * @returns
+ * ***************************************************/
+export const setInactive = asyncHandler(async (req, res) => {
+	const { slug } = req.params;
+
+	const campaign = await Campaign.findOne({ slug });
+	if (!campaign) {
+		throw new Error("No campaign found");
+	}
+
+	campaign.open = false;
+	await campaign.save();
+
+	res.status(200).json({
+		success: true,
+		message: "Campaign is inactive now",
 	});
 });

@@ -109,9 +109,67 @@ export const logout = (req, res) => {
 };
 
 /**************************************************
+ * @VALIDATE
+ * @REQUEST_TYPE POST
+ * @route http://localhost:<PORT>/api/auth/validate
+ * @description Validate a user's token
+ * @parameters none
+ * @returns User
+ * @middleware isLoggedIn
+ **************************************************/
+export const validate = asyncHandler(async (req, res) => {
+	const { user } = req;
+
+	if (user.email === "anonymous@crowdwise.com") {
+		return loginAnonymous(req, res);
+	} else {
+		const googleUser = await User.findById(user._id);
+		const token = await googleUser.getJwtToken();
+
+		res.cookie("token", token, options);
+
+		return res.status(200).json({
+			success: true,
+			user,
+		});
+	}
+});
+
+/**************************************************
+ * @REQUEST_VERIFICATION
+ * @REQUEST_TYPE PUT
+ * @route http://localhost:<PORT>/api/auth/request-verification
+ * @description Request verification for a user
+ * @parameters phone_number, aadhar_number
+ * @returns User
+ **************************************************/
+export const requestVerification = asyncHandler(async (req, res) => {
+	const { phone_number, aadhar_number } = req.body;
+
+	const user = await User.findById(req.user._id);
+
+	if (
+		(user.phone_number && user.aadhar_number) ||
+		user.role === authRole.POWER
+	) {
+		throw new Error("User details are already available");
+	}
+
+	user.phone_number = phone_number;
+	user.aadhar_number = aadhar_number;
+	await user.save();
+
+	return res.status(200).json({
+		success: true,
+		message: "User verification requested successfully",
+		user,
+	});
+});
+
+/**************************************************
  * @CREATE_POWER_USER
  * @REQUEST_TYPE PUT
- * @route http://localhost:<PORT>/api/auth/update-role
+ * @route http://localhost:<PORT>/api/admin/auth/update-role
  * @description Update a user's role
  * @parameters role, email
  * @returns User
@@ -140,54 +198,4 @@ export const createPowerUser = asyncHandler(async (req, res) => {
 		message: "User role updated successfully",
 		user,
 	});
-});
-
-/**************************************************
- * @VALIDATE
- * @REQUEST_TYPE POST
- * @route http://localhost:<PORT>/api/auth/validate
- * @description Validate a user's token
- * @parameters none
- * @returns User
- * @middleware isLoggedIn
- **************************************************/
-export const validate = asyncHandler(async (req, res) => {
-	let token;
-	if (
-		req.cookies?.token ||
-		(req.headers?.authorization &&
-			req.headers?.authorization.startsWith("Bearer"))
-	) {
-		token = req.cookies?.token || req.headers.authorization.split(" ")[1];
-	}
-
-	if (!token) {
-		return res.status(401).json({
-			success: false,
-			message: "Session expired. Please login again.",
-		});
-	}
-
-	try {
-		const decodedJwtPayload = await JWT.verify(token, config.JWT_SECRET);
-		if (!decodedJwtPayload) {
-			throw new Error("Bad session token");
-		}
-
-		if (decodedJwtPayload.email === "anonymous@crowdwise.com") {
-			return loginAnonymous(req, res);
-		} else {
-			let user = await User.findOne({ email: decodedJwtPayload.email });
-			let token = await user.getJwtToken();
-
-			res.cookie("token", token, options);
-
-			return res.status(200).json({
-				success: true,
-				user,
-			});
-		}
-	} catch (err) {
-		throw new Error("Bad session token");
-	}
 });

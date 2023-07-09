@@ -35,7 +35,7 @@ export const isLoggedIn = asyncHandler(async (req, _res, next) => {
 		} else {
 			req.user = await User.findById(
 				decodedJwtPayload._id,
-				"name email role phone_number donations"
+				"name email role phone_number donations profile_picture"
 			);
 		}
 		next();

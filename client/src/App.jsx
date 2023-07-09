@@ -14,6 +14,7 @@ import Browse from "./components/Browse";
 import PaymentSuccessful from "./components/PaymentSuccessful";
 import CampaignSuccessful from "./components/CampaignSuccessful";
 import Profile from "./components/Profile";
+import Verification from "./components/Verification";
 
 axios.defaults.baseURL = config.SERVER_URL;
 axios.defaults.withCredentials = true;
@@ -55,6 +56,7 @@ function App() {
 								<Route path="/profile" element={<Profile />} />
 								<Route path="/start-a-campaign" element={<StartACampaign />} />
 								<Route path="/browse" element={<Browse />} />
+								<Route path="/verification" element={<Verification />} />
 								<Route path="/paymentsuccess" element={<PaymentSuccessful />} />
 								<Route
 									path="/start-a-campaign/sucess"

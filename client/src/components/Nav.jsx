@@ -67,6 +67,14 @@ const Nav = () => {
 								<Link to="/profile">
 									<span>Profile</span>
 								</Link>
+								{user.email !== "anonymous@crowdwise.com" &&
+								user.role === "BASIC" ? (
+									<Link to="/verification">
+										<span>Verification</span>
+									</Link>
+								) : (
+									""
+								)}
 								<span
 									onClick={handleLogout}
 									className="cursor-pointer text-accentOrange"

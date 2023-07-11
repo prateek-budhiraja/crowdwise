@@ -31,13 +31,11 @@ const userSchema = mongoose.Schema({
 	},
 	phone_number: {
 		type: Number,
-		unique: [true, "Phone number already linked with another account"],
 		minLength: [10, "Phone number must be 10 digits!"],
 		maxLength: [10, "Phone number must be 10 digits!"],
 	},
 	aadhar_number: {
 		type: Number,
-		unique: [true, "Aadhar Number is already linked with another account!"],
 		minLength: [12, "Enter a valid aadhar number!"],
 		maxLength: [12, "Enter a valid aadhar number!"],
 	},

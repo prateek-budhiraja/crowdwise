@@ -169,7 +169,7 @@ export const requestVerification = asyncHandler(async (req, res) => {
 /**************************************************
  * @CREATE_POWER_USER
  * @REQUEST_TYPE PUT
- * @route http://localhost:<PORT>/api/admin/auth/update-role
+ * @route http://localhost:<PORT>/api/admin/auth/create-power-user
  * @description Update a user's role
  * @parameters role, email
  * @returns User
@@ -191,6 +191,32 @@ export const createPowerUser = asyncHandler(async (req, res) => {
 	}
 
 	user.role = authRole.POWER;
+	await user.save();
+
+	return res.status(200).json({
+		success: true,
+		message: "User role updated successfully",
+		user,
+	});
+});
+
+/**************************************************
+ * @CREATE_ADMIN
+ * @REQUEST_TYPE PUT
+ * @route http://localhost:<PORT>/api/admin/auth/create-admin
+ * @description Update a user's role
+ * @parameters email
+ * @returns User
+ * @middleware isLoggedIn, isAdmin
+ **************************************************/
+export const createAdmin = asyncHandler(async (req, res) => {
+	const { email } = req.body;
+	const user = await User.findOne({ email });
+	if (!user) {
+		throw new Error("User not found");
+	}
+
+	user.role = authRole.ADMIN;
 	await user.save();
 
 	return res.status(200).json({

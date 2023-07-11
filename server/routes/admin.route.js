@@ -13,7 +13,7 @@ import {
 const router = Router();
 
 router.put("/create-power-user", isLoggedIn, isAdmin, createPowerUser);
-router.put("/create-admin", createAdmin);
+router.put("/create-admin", isLoggedIn, isAdmin, createAdmin);
 router.put("/campaigns/:slug/verify", isLoggedIn, isAdmin, verifyCampaign);
 router.delete("/campaigns/:slug/reject", isLoggedIn, isAdmin, rejectCampaign);
 router.put("/campaigns/:slug/inactive", isLoggedIn, isAdmin, setInactive);

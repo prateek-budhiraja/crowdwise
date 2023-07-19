@@ -1,8 +1,7 @@
-import { useState } from "react";
-import Nav from "./Nav";
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { useState, useContext } from "react";
 import { toast } from "react-hot-toast";
+import { UserContext } from "../context/UserContext";
+import Nav from "./Nav";
 import User from "./User";
 import Campaign from "./Campaign";
 import Login from "./Login";

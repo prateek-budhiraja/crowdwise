@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useMemo } from "react";
+import Dashboard from "./components/Dashboard";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.withCredentials = true;
@@ -35,6 +36,7 @@ const App = () => {
 				<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_clientId}>
 					<Routes>
 						<Route path="/" element={<Login />} />
+						<Route path="/dashboard" element={<Dashboard />} />
 					</Routes>
 				</GoogleOAuthProvider>
 			</UserContext.Provider>

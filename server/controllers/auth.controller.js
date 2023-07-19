@@ -216,6 +216,10 @@ export const createAdmin = asyncHandler(async (req, res) => {
 		throw new Error("User not found");
 	}
 
+	if (user.role === authRole.ADMIN) {
+		throw new Error("User is already an admin");
+	}
+
 	user.role = authRole.ADMIN;
 	await user.save();
 
@@ -223,5 +227,27 @@ export const createAdmin = asyncHandler(async (req, res) => {
 		success: true,
 		message: "User role updated successfully",
 		user,
+	});
+});
+
+/**************************************************
+ * @GET_ALL_USERS
+ * @REQUEST_TYPE GET
+ * @route http://localhost:<PORT>/api/admin/get-all-users
+ * @description Get all users
+ * @parameters none
+ * @returns User[]
+ * @middleware isLoggedIn, isAdmin
+ ***************************************************/
+export const getAllUsers = asyncHandler(async (req, res) => {
+	const users = await User.find();
+
+	if (!users) {
+		throw new Error("No users found");
+	}
+
+	return res.status(200).json({
+		success: true,
+		users,
 	});
 });

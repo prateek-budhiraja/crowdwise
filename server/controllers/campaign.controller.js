@@ -284,3 +284,26 @@ export const setInactive = asyncHandler(async (req, res) => {
 		message: "Campaign is inactive now",
 	});
 });
+
+/**************************************************
+ * @SET_ACTIVE
+ * @REQUEST_TYPE PUT
+ * @route http://localhost:<PORT>/api/admin/campaigns/:slug/active
+ * @description Set campaign active
+ * @returns
+ * ***************************************************/
+export const setActive = asyncHandler(async (req, res) => {
+	const { slug } = req.params;
+	const campaign = await Campaign.findOne({ slug });
+	if (!campaign) {
+		throw new Error("No campaign found");
+	}
+
+	campaign.open = true;
+	await campaign.save();
+
+	res.status(200).json({
+		success: true,
+		message: "Campaign is active now",
+	});
+});

@@ -113,10 +113,17 @@ const CampaignPage = () => {
 				<ShimmerCampaignPage />
 			) : (
 				<>
+					{!campaignData?.open ? (
+						<h3 className="bg-accentOrange pl-4 lg:text-xl sticky top-0 mb-5 text-center py-1">
+							This campaign is currently closed. Please check back later.
+						</h3>
+					) : null}
 					<div className="bg-[#181818] fixed bottom-0 grid grid-cols-3 w-full gap-4 px-4 py-4 border-t-2 border-gray-600 lg:hidden">
 						<button
 							onClick={() => {
-								navigator.clipboard.writeText("Hello");
+								navigator.clipboard.writeText(
+									`Please donate to "${campaignData?.title}" campaign at ${window.location.href}`
+								);
 							}}
 							className="col-span-1 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
 						>
@@ -124,7 +131,10 @@ const CampaignPage = () => {
 						</button>
 						<button
 							onClick={() => setIsDonationModal(true)}
-							className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
+							className={`col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300 ${
+								campaignData?.open ? "" : "opacity-50 cursor-not-allowed"
+							}`}
+							disabled={campaignData?.open ? false : true}
 						>
 							Donate
 						</button>
@@ -251,7 +261,10 @@ const CampaignPage = () => {
 								</button>
 								<button
 									onClick={() => setIsDonationModal(true)}
-									className="col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300"
+									className={`col-span-2 rounded-full bg-accentOrange font-lg font-semibold py-3 text-gray-300 ${
+										campaignData?.open ? "" : "opacity-50 cursor-not-allowed"
+									}`}
+									disabled={campaignData?.open ? false : true}
 								>
 									Donate
 								</button>

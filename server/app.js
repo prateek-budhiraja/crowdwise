@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const allowedDomains = config.CLIENT_URL.split(",");
+const allowedDomains = config.ALLOWED_URLS.split(",");
 app.use(
 	cors({
 		origin: function (origin, callback) {

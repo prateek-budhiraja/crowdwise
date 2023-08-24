@@ -110,7 +110,7 @@ const Browse = () => {
 					</button>
 					<button
 						type="submit"
-						className="bg-accentOrange rounded-lg text-gray-300 font-medium px-3 py-1.5 md:p-2.5"
+						className="bg-accentOrange rounded-lg text-gray-300 font-medium px-3 py-1.5 md:p-2.5 lg:hidden"
 					>
 						<img
 							src="/assets/search.svg"
